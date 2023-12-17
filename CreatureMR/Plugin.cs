@@ -21,9 +21,10 @@ namespace CreatureModelReplacement
 
         // Universal config options 
         public static ConfigEntry<bool> enableCreatureForAllSuits { get; private set; }
+        public static ConfigEntry<bool> enableCreatureAsDefault { get; private set; }
         public static ConfigEntry<string> suitNamesToEnableCreature { get; private set; }
         
-        // Miku model specific config options
+        // Model specific config options
         public static ConfigEntry<float> UpdateRate { get; private set; }
         public static ConfigEntry<float> distanceDisablePhysics { get; private set; }
         public static ConfigEntry<bool> disablePhysicsAtRange { get; private set; }
@@ -31,6 +32,7 @@ namespace CreatureModelReplacement
         private static void InitConfig()
         {
             enableCreatureForAllSuits = config.Bind<bool>("Suits to Replace Settings", "Enable Creature for all Suits", false, "Enable to replace every suit with Creature. Set to false to specify suits");
+            enableCreatureAsDefault = config.Bind<bool>("Suits to Replace Settings", "Enable Creature as default", false, "Enable to replace every suit that hasn't been otherwise registered with Creature.");
             suitNamesToEnableCreature = config.Bind<string>("Suits to Replace Settings", "Suits to enable Creature for", "Default,Orange suit", "Enter a comma separated list of suit names.(Additionally, [Green suit,Pajama suit,Hazard suit])");
 
             UpdateRate = config.Bind<float>("Dynamic Bone Settings", "Update rate", 30, "Refreshes dynamic bones more times per second the higher the number");
@@ -45,20 +47,24 @@ namespace CreatureModelReplacement
             Assets.PopulateAssets();
 
             // Plugin startup logic
-            if (!enableCreatureForAllSuits.Value)
+
+
+            if (enableCreatureForAllSuits.Value)
             {
-                var commaSepList = suitNamesToEnableCreature.Value.Split(',');
-                foreach (var item in commaSepList)
-                {
-                    ModelReplacementAPI.RegisterSuitModelReplacement(item, typeof(BodyReplacement));
-                }
+                ModelReplacementAPI.RegisterModelReplacementOverride(typeof(BodyReplacementCreature));
 
             }
-            else
+            if (enableCreatureAsDefault.Value)
             {
-                ModelReplacementAPI.RegisterModelReplacementOverride(typeof(BodyReplacement));
+                ModelReplacementAPI.RegisterModelReplacementDefault(typeof(BodyReplacementCreature));
+
             }
 
+            var commaSepList = suitNamesToEnableCreature.Value.Split(',');
+            foreach (var item in commaSepList)
+            {
+                ModelReplacementAPI.RegisterSuitModelReplacement(item, typeof(BodyReplacementCreature));
+            }
                 
 
             Harmony harmony = new Harmony("LeCreature");
