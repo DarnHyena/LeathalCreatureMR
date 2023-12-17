@@ -36,13 +36,12 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Reference Include="Assembly-CSharp" Publicize="true">
-      <HintPath>$(LethalCompanyPath)\Lethal Company_Data\Managed\Assembly-CSharp.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
     <Reference Include="3rdPerson">
       <HintPath>..\Libraries\3rdPerson.dll</HintPath>
       <Private>false</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\..\..\..\..\Games (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="LCThirdPerson">
       <HintPath>..\Libraries\LCThirdPerson.dll</HintPath>
@@ -53,12 +52,10 @@
       <Private>false</Private>
     </Reference>
     <Reference Include="Unity.InputSystem">
-      <HintPath>$(LethalCompanyPath)\Lethal Company_Data\Managed\Unity.InputSystem.dll</HintPath>
-      <Private>false</Private>
+      <HintPath>..\..\..\..\..\..\Games (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Unity.InputSystem.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Netcode.Runtime">
-      <HintPath>$(LethalCompanyPath)\Lethal Company_Data\Managed\Unity.Netcode.Runtime.dll</HintPath>
-      <Private>false</Private>
+      <HintPath>..\..\..\..\..\..\Games (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Unity.Netcode.Runtime.dll</HintPath>
     </Reference>
   </ItemGroup>
   

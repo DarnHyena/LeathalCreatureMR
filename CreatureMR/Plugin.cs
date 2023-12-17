@@ -7,21 +7,21 @@ using BepInEx.Configuration;
 
 //using System.Numerics;
 
-namespace HatsuneMikuModelReplacement
+namespace CreatureModelReplacement
 {
 
 
 
 
-    [BepInPlugin("meow.MikuModelReplacement", "Miku Model", "1.4.0")]
+    [BepInPlugin("CreaturelReplacement", "Lethal Creature", "2.0.0")]
     [BepInDependency("meow.ModelReplacementAPI", BepInDependency.DependencyFlags.HardDependency)]
     public class Plugin : BaseUnityPlugin
     {
         public static ConfigFile config;
 
         // Universal config options 
-        public static ConfigEntry<bool> enableMikuForAllSuits { get; private set; }
-        public static ConfigEntry<string> suitNamesToEnableMiku { get; private set; }
+        public static ConfigEntry<bool> enableCreatureForAllSuits { get; private set; }
+        public static ConfigEntry<string> suitNamesToEnableCreature { get; private set; }
         
         // Miku model specific config options
         public static ConfigEntry<float> UpdateRate { get; private set; }
@@ -30,10 +30,10 @@ namespace HatsuneMikuModelReplacement
 
         private static void InitConfig()
         {
-            enableMikuForAllSuits = config.Bind<bool>("Suits to Replace Settings", "Enable Miku for all Suits", false, "Enable to replace every suit with Miku. Set to false to specify suits");
-            suitNamesToEnableMiku = config.Bind<string>("Suits to Replace Settings", "Suits to enable Miku for", "Default,Orange suit", "Enter a comma separated list of suit names.(Additionally, [Green suit,Pajama suit,Hazard suit])");
+            enableCreatureForAllSuits = config.Bind<bool>("Suits to Replace Settings", "Enable Creature for all Suits", false, "Enable to replace every suit with Creature. Set to false to specify suits");
+            suitNamesToEnableCreature = config.Bind<string>("Suits to Replace Settings", "Suits to enable Creature for", "Default,Orange suit", "Enter a comma separated list of suit names.(Additionally, [Green suit,Pajama suit,Hazard suit])");
 
-            UpdateRate = config.Bind<float>("Dynamic Bone Settings", "Update rate", 60, "Refreshes dynamic bones more times per second the higher the number");
+            UpdateRate = config.Bind<float>("Dynamic Bone Settings", "Update rate", 30, "Refreshes dynamic bones more times per second the higher the number");
             disablePhysicsAtRange = config.Bind<bool>("Dynamic Bone Settings", "Disable physics at range", false, "Enable to disable physics past the specified range");
             distanceDisablePhysics = config.Bind<float>("Dynamic Bone Settings", "Distance to disable physics", 20, "If Disable physics at range is enabled, this is the range after which physics is disabled.");
             
@@ -45,31 +45,31 @@ namespace HatsuneMikuModelReplacement
             Assets.PopulateAssets();
 
             // Plugin startup logic
-            if (!enableMikuForAllSuits.Value)
+            if (!enableCreatureForAllSuits.Value)
             {
-                var commaSepList = suitNamesToEnableMiku.Value.Split(',');
+                var commaSepList = suitNamesToEnableCreature.Value.Split(',');
                 foreach (var item in commaSepList)
                 {
-                    ModelReplacementAPI.RegisterSuitModelReplacement(item, typeof(BodyReplacementMiku));
+                    ModelReplacementAPI.RegisterSuitModelReplacement(item, typeof(BodyReplacement));
                 }
 
             }
             else
             {
-                ModelReplacementAPI.RegisterModelReplacementOverride(typeof(BodyReplacementMiku));
+                ModelReplacementAPI.RegisterModelReplacementOverride(typeof(BodyReplacement));
             }
 
                 
 
-            Harmony harmony = new Harmony("meow.MikuModelReplacement");
+            Harmony harmony = new Harmony("LeCreature");
             harmony.PatchAll();
-            Logger.LogInfo($"Plugin {"meow.MikuModelReplacement"} is loaded!");
+            Logger.LogInfo($"Plugin {"CreaturelReplacement"} is loaded!");
         }
     }
     public static class Assets
     {
         // Replace mbundle with the Asset Bundle Name from your unity project 
-        public static string mainAssetBundleName = "mbundle";
+        public static string mainAssetBundleName = "lecreature";
         public static AssetBundle MainAssetBundle = null;
 
         private static string GetAssemblyName() => Assembly.GetExecutingAssembly().FullName.Split(',')[0];

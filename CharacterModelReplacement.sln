@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.7.34202.233
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.33027.164
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelReplacementAPI", "ModelReplacementAPI\ModelReplacementAPI.csproj", "{2DC60A9D-F44B-4B06-8A37-9B05D6D2CAC8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HatsuneMikuModelReplacement", "HatsuneMikuModelReplacement\HatsuneMikuModelReplacement.csproj", "{1380539A-4B60-4BB6-B8F9-B8800859339A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LethalCreatureMR", "CreatureMR\LethalCreatureMR.csproj", "{1380539A-4B60-4BB6-B8F9-B8800859339A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{2DC60A9D-F44B-4B06-8A37-9B05D6D2CAC8} = {2DC60A9D-F44B-4B06-8A37-9B05D6D2CAC8}
 	EndProjectSection
