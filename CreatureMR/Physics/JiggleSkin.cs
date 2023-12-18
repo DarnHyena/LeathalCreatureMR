@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace JigglePhysics {
+namespace LethalCreatureMR.JigglePhysics {
 
 public class JiggleSkin : MonoBehaviour {
     [Serializable]

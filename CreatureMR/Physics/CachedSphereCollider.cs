@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace JigglePhysics {
+namespace LethalCreatureMR.JigglePhysics
+{
 public static class CachedSphereCollider {
     private class DestroyListener : MonoBehaviour {
         void OnDestroy() {

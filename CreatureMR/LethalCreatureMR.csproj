@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <LethalCompanyPath>E:\Games (x86)\Steam\steamapps\common\Lethal Company\</LethalCompanyPath>
   </PropertyGroup>
   
@@ -18,43 +18,12 @@
     <RootNamespace>LethalCreatureMR</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Physics\CachedSphereCollider.cs" />
-    <Compile Remove="Physics\JiggleBone.cs" />
-    <Compile Remove="Physics\JiggleDefaults.cs" />
-    <Compile Remove="Physics\JigglePoint.cs" />
-    <Compile Remove="Physics\JiggleRigBuilder.cs" />
-    <Compile Remove="Physics\JiggleRigLOD.cs" />
-    <Compile Remove="Physics\JiggleRigSimpleLOD.cs" />
-    <Compile Remove="Physics\JiggleSettingData.cs" />
-    <Compile Remove="Physics\JiggleSettings.cs" />
-    <Compile Remove="Physics\JiggleSettingsBase.cs" />
-    <Compile Remove="Physics\JiggleSettingsBlend.cs" />
-    <Compile Remove="Physics\JiggleSkin.cs" />
-    <Compile Remove="Physics\PositionSignal.cs" />
-  </ItemGroup>
-
   <!-- Replace mbundle with the Asset Bundle Name from your unity project -->
   <ItemGroup>
     <None Remove="lecreature" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="lecreature" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Physics\CachedSphereCollider.cs" />
-    <None Include="Physics\JiggleBone.cs" />
-    <None Include="Physics\JiggleDefaults.cs" />
-    <None Include="Physics\JigglePoint.cs" />
-    <None Include="Physics\JiggleRigBuilder.cs" />
-    <None Include="Physics\JiggleRigLOD.cs" />
-    <None Include="Physics\JiggleRigSimpleLOD.cs" />
-    <None Include="Physics\JiggleSettingData.cs" />
-    <None Include="Physics\JiggleSettings.cs" />
-    <None Include="Physics\JiggleSettingsBase.cs" />
-    <None Include="Physics\JiggleSettingsBlend.cs" />
-    <None Include="Physics\JiggleSkin.cs" />
-    <None Include="Physics\PositionSignal.cs" />
   </ItemGroup>
   
   <ItemGroup>

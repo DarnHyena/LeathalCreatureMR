@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace JigglePhysics {
+namespace LethalCreatureMR.JigglePhysics {
 
 [CreateAssetMenu(fileName = "JiggleSettingsBlend", menuName = "JigglePhysics/Blend Settings", order = 1)]
 // This is used to blend other jiggle settings together.

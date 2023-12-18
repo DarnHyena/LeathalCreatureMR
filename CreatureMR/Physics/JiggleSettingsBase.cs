@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace JigglePhysics {
+namespace LethalCreatureMR.JigglePhysics {
 public class JiggleSettingsBase : ScriptableObject {
     public virtual JiggleSettingsData GetData() {
         return new JiggleSettingsData();

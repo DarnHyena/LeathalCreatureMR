@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Reflection;
 using ModelReplacement;
 using BepInEx.Configuration;
+using LethalCreatureMR.JigglePhysics;
 
 //using System.Numerics;
 
@@ -51,19 +52,19 @@ namespace CreatureModelReplacement
 
             if (enableCreatureForAllSuits.Value)
             {
-                ModelReplacementAPI.RegisterModelReplacementOverride(typeof(BodyReplacementCreature));
+                ModelReplacementAPI.RegisterModelReplacementOverride(typeof(BodyReplacement));
 
             }
             if (enableCreatureAsDefault.Value)
             {
-                ModelReplacementAPI.RegisterModelReplacementDefault(typeof(BodyReplacementCreature));
+                ModelReplacementAPI.RegisterModelReplacementDefault(typeof(BodyReplacement));
 
             }
 
             var commaSepList = suitNamesToEnableCreature.Value.Split(',');
             foreach (var item in commaSepList)
             {
-                ModelReplacementAPI.RegisterSuitModelReplacement(item, typeof(BodyReplacementCreature));
+                ModelReplacementAPI.RegisterSuitModelReplacement(item, typeof(BodyReplacement));
             }
                 
 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace JigglePhysics {
+namespace LethalCreatureMR.JigglePhysics {
 public class JigglePoint {
     private Transform transform;
     private PositionSignal particleSignal;

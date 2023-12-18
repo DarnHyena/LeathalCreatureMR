@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace JigglePhysics {
+namespace LethalCreatureMR.JigglePhysics {
 
 public class JiggleRigBuilder : MonoBehaviour {
     public static float maxCatchupTime => Time.fixedDeltaTime*4;
@@ -199,7 +199,7 @@ public class JiggleRigBuilder : MonoBehaviour {
             rig.Initialize();
         }
     }
-
+        
     public void Advance(float deltaTime) {
         if (levelOfDetail!=null && !levelOfDetail.CheckActive(transform.position)) {
             if (wasLODActive) PrepareTeleport();
@@ -229,7 +229,7 @@ public class JiggleRigBuilder : MonoBehaviour {
                 rig.Update(wind, time);
             }
         }
-        
+            Debug.Log(jiggleRigs.Count);
         foreach (JiggleRig rig in jiggleRigs) {
             rig.Pose(debugDraw);
         }

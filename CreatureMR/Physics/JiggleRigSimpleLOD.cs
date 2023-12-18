@@ -1,13 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using JigglePhysics;
+using LethalCreatureMR.JigglePhysics;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 using UnityEngine;
 
-namespace JigglePhysics {
+namespace LethalCreatureMR.JigglePhysics {
 
     [CreateAssetMenu(fileName = "JiggleRigSimpleLOD", menuName = "JigglePhysics/JiggleRigSimpleLOD", order = 1)]
     public class JiggleRigSimpleLOD : JiggleRigLOD {

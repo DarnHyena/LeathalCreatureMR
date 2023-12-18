@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Reflection;
 using UnityEditor;
 
-namespace JigglePhysics {
+namespace LethalCreatureMR.JigglePhysics {
 public static class JiggleDefaults {
     private static string GetActiveFolderPath() {
         // Can't believe we need to use reflection to call this method!
