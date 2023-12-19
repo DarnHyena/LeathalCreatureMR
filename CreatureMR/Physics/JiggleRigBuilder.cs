@@ -1,10 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace LethalCreatureMR.JigglePhysics {
-
+    [DefaultExecutionOrder(1000)]
 public class JiggleRigBuilder : MonoBehaviour {
     public static float maxCatchupTime => Time.fixedDeltaTime*4;
 
@@ -23,10 +24,11 @@ public class JiggleRigBuilder : MonoBehaviour {
 
         public Transform GetRootTransform() => rootTransform;
         public JiggleRig(Transform rootTransform, JiggleSettingsBase jiggleSettings,
-            ICollection<Transform> ignoredTransforms) {
+            ICollection<Transform> ignoredTransforms,ICollection<Collider> colliders) {
             this.rootTransform = rootTransform;
             this.jiggleSettings = jiggleSettings;
             this.ignoredTransforms = new List<Transform>(ignoredTransforms);
+            this.colliders = new List<Collider>(colliders);
             Initialize();
         }
 
@@ -229,7 +231,7 @@ public class JiggleRigBuilder : MonoBehaviour {
                 rig.Update(wind, time);
             }
         }
-            Debug.Log(jiggleRigs.Count);
+            
         foreach (JiggleRig rig in jiggleRigs) {
             rig.Pose(debugDraw);
         }

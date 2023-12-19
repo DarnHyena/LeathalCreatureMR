@@ -301,7 +301,6 @@ public partial class JiggleBone {
 
             if (parent != null) {
                 transform.position = positionBlend;
-                    Debug.Log("Pose" + transform.name);
             }
             Vector3 childPosition = child.GetTransformPosition();
             Vector3 cachedAnimatedVector = childPosition - transform.position;

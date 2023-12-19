@@ -12,8 +12,6 @@ namespace CreatureModelReplacement
 {
 
 
-
-
     [BepInPlugin("CreaturelReplacement", "Lethal Creature", "2.0.0")]
     [BepInDependency("meow.ModelReplacementAPI", BepInDependency.DependencyFlags.HardDependency)]
     public class Plugin : BaseUnityPlugin
@@ -34,7 +32,7 @@ namespace CreatureModelReplacement
         {
             enableCreatureForAllSuits = config.Bind<bool>("Suits to Replace Settings", "Enable Creature for all Suits", false, "Enable to replace every suit with Creature. Set to false to specify suits");
             enableCreatureAsDefault = config.Bind<bool>("Suits to Replace Settings", "Enable Creature as default", false, "Enable to replace every suit that hasn't been otherwise registered with Creature.");
-            suitNamesToEnableCreature = config.Bind<string>("Suits to Replace Settings", "Suits to enable Creature for", "Default,Orange suit", "Enter a comma separated list of suit names.(Additionally, [Green suit,Pajama suit,Hazard suit])");
+            suitNamesToEnableCreature = config.Bind<string>("Suits to Replace Settings", "Suits to enable Creature for", "LC_Red", "Enter a comma separated list of suit names.(Additionally, [Green suit,Pajama suit,Hazard suit])");
 
             UpdateRate = config.Bind<float>("Dynamic Bone Settings", "Update rate", 30, "Refreshes dynamic bones more times per second the higher the number");
             disablePhysicsAtRange = config.Bind<bool>("Dynamic Bone Settings", "Disable physics at range", false, "Enable to disable physics past the specified range");

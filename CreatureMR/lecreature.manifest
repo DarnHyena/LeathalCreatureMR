@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 3317404917
+CRC: 60491684
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: cdc7ac2dc19bcf5157dbc327a30d606f
+    Hash: 4f869a363612a600be427c67b8ce2dee
   TypeTreeHash:
     serializedVersion: 2
-    Hash: a874bebb2078193e23c970be8c3d9a6f
+    Hash: 95f6ebfb2f4912292ae92fb0da4fbc69
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: cdc7ac2dc19bcf5157dbc327a30d606f
+    Hash: 4f869a363612a600be427c67b8ce2dee
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -47,9 +47,7 @@ Assets:
 - Assets/Lethal Creatures/Textures/LC_Pajam.png
 - Assets/Lethal Creatures/Textures/LC_Red.png
 - Assets/Lethal Creatures/LCMat.mat
-- Assets/Lethal Creatures/Physics/LCEar.asset
 - Assets/Lethal Creatures/Textures/LC_Green.png
 - Assets/Lethal Creatures/Textures/LC_Haz.png
 - Assets/ModelReplacementAPI/AssetsToBuild/CreatureA.prefab
-- Assets/Lethal Creatures/Physics/LCTail.asset
 Dependencies: []

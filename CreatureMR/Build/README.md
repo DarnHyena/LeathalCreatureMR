@@ -12,3 +12,4 @@
 ## Changelog
 	- v2.0.0
 		- LC migrated to ModelReplacementAPI base
+		- Bone Physics \o/

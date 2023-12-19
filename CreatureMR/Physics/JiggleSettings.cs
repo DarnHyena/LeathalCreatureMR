@@ -39,8 +39,19 @@ public class JiggleSettings : JiggleSettingsBase {
     private float radiusMultiplier = 0f;
     [HideInInspector] [SerializeField] [Tooltip("How the radius is expressed as a curve along the bone chain from root to child.")]
     private AnimationCurve radiusCurve = new AnimationCurve(new Keyframe(0f, 1f), new Keyframe(1f, 0f));
+        public void SetData(JiggleSettingsData data)
+        {
+            gravityMultiplier = data.gravityMultiplier;
+            friction = data.friction;
+            angleElasticity = data.angleElasticity;
+            blend = data.blend;
+            airDrag = data.airDrag;
+            lengthElasticity = data.lengthElasticity;
+            elasticitySoften = data.elasticitySoften;
+            radiusMultiplier = data.radiusMultiplier;
+        }
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
     private static bool advancedFoldout;
     private static bool collisionFoldout;
     public virtual void OnInspectorGUI(SerializedObject serializedObject) {
@@ -175,9 +186,9 @@ public class JiggleSettings : JiggleSettingsBase {
         Undo.RecordObject(this, "Pasted parameters");
         data.ApplyTo(this);
     }
-    #endif
+#endif
 
-    public override JiggleSettingsData GetData() {
+        public override JiggleSettingsData GetData() {
         return new JiggleSettingsData {
             gravityMultiplier = gravityMultiplier,
             friction = friction,
