@@ -14,8 +14,8 @@
     <ReferencePath>$(ReferencePath);$(LethalCompanyPath)\Lethal Company_Data\Managed</ReferencePath>
     <ReferencePath>$(ReferencePath);$(LethalCompanyPath)\Lethal Company_Data\Plugins</ReferencePath>
     <ReferencePath>$(ReferencePath);$(LethalCompanyPath)\BepinEx\plugins</ReferencePath>
-    <AssemblyName>LethalCreatureMR</AssemblyName>
-    <RootNamespace>LethalCreatureMR</RootNamespace>
+    <AssemblyName>CackleCrewMR</AssemblyName>
+    <RootNamespace>CackleCrewMR</RootNamespace>
   </PropertyGroup>
 
   <!-- Replace mbundle with the Asset Bundle Name from your unity project -->

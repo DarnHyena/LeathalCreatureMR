@@ -12,7 +12,7 @@ namespace CreatureModelReplacement
 {
 
 
-    [BepInPlugin("CreatureReplacement", "Lethal Creature", "2.0.0")]
+    [BepInPlugin("CreatureReplacement", "Cackle Crew", "2.0.0")]
     [BepInDependency("meow.ModelReplacementAPI", BepInDependency.DependencyFlags.HardDependency)]
 
     
@@ -22,15 +22,15 @@ namespace CreatureModelReplacement
 
         // Universal config options  
         public static ConfigEntry<bool> enableModelForAllSuits { get; private set; }
-        //public static ConfigEntry<bool> enableModelAsDefault { get; private set; }
-        //public static ConfigEntry<string> suitNamesToEnableModel { get; private set; }
+        public static ConfigEntry<bool> enableModelAsDefault { get; private set; }
+        public static ConfigEntry<string> suitNamesToEnableModel { get; private set; }
         
 
         private static void InitConfig()
         {
-            enableModelForAllSuits = config.Bind<bool>("Suits to Replace Settings", "Enable Model for all Suits", true, "Enable to replace every suit with Model. Set to false to specify suits");
-            //enableModelAsDefault = config.Bind<bool>("Suits to Replace Settings", "Enable Model as default", false, "Enable to replace every suit that hasn't been otherwise registered with Model.");
-            //suitNamesToEnableModel = config.Bind<string>("Suits to Replace Settings", "Suits to enable Model for", "Default,Orange suit,Green suit,Pajama suit,Hazard suit", "Enter a comma separated list of suit names.(Additionally, [Green suit,Pajama suit,Hazard suit])");
+            enableModelForAllSuits = config.Bind<bool>("Suits to Replace Settings", "Enable Model for all Suits", false, "Enable to replace every suit with Model. Set to false to specify suits");
+            enableModelAsDefault = config.Bind<bool>("Suits to Replace Settings", "Enable Model as default", false, "Enable to replace every suit that hasn't been otherwise registered with Model.");
+            suitNamesToEnableModel = config.Bind<string>("Suits to Replace Settings", "Suits to enable Model for", "Default,Orange suit,Green suit,Pajama suit,Hazard suit", "Enter a comma separated list of suit names.(Additionally, [Green suit,Pajama suit,Hazard suit])");
             
         }
         private void Awake()
@@ -40,14 +40,13 @@ namespace CreatureModelReplacement
             Assets.PopulateAssets();
 
             // Plugin startup logic
-            
 
             if (enableModelForAllSuits.Value)
             {
                 ModelReplacementAPI.RegisterModelReplacementOverride(typeof(BodyReplacement));
 
             }
-            /*
+            
             if (enableModelAsDefault.Value)
             {
                 ModelReplacementAPI.RegisterModelReplacementDefault(typeof(BodyReplacement));
@@ -59,7 +58,7 @@ namespace CreatureModelReplacement
             {
                 ModelReplacementAPI.RegisterSuitModelReplacement(item, typeof(BodyReplacement));
             }
-            */
+            
             
             Harmony harmony = new Harmony("LeCreature");
             harmony.PatchAll();
