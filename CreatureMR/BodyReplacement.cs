@@ -18,18 +18,34 @@ namespace CreatureModelReplacement
             switch (StartOfRound.Instance.unlockablesList.unlockables[controller.currentSuitID].unlockableName)
             {
 
-                case "Orange suit":
+                case "Orange suit": //Name of the suit yours will replace
+                    replacementMat = Assets.MainAssetBundle.LoadAsset<Material>("CCRed"); // Name of your material
+                    break;
+                case "CARed": // Duplicate to allow for swapping between default and moresuit
                     replacementMat = Assets.MainAssetBundle.LoadAsset<Material>("CCRed");
                     break;
+
                 case "Green suit":
                     replacementMat = Assets.MainAssetBundle.LoadAsset<Material>("CCGreen");
                     break;
+                case "CAGreen":
+                    replacementMat = Assets.MainAssetBundle.LoadAsset<Material>("CCGreen");
+                    break;
+
                 case "Hazard suit":
                     replacementMat = Assets.MainAssetBundle.LoadAsset<Material>("CCHaz");
                     break;
+                case "CAHaz":
+                    replacementMat = Assets.MainAssetBundle.LoadAsset<Material>("CCHaz");
+                    break;
+
                 case "Pajama suit":
                     replacementMat = Assets.MainAssetBundle.LoadAsset<Material>("CCPajam");
                     break;
+                case "CAPajam":
+                    replacementMat = Assets.MainAssetBundle.LoadAsset<Material>("CCPajam");
+                    break;
+
                 default:
                     replacementMat = Assets.MainAssetBundle.LoadAsset<Material>("CCRed");
                     break;
