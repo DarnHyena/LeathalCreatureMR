@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 2053948073
+CRC: 4166423666
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 88cfc08e3747fbf59d96ebc5272b9c43
+    Hash: 5fe9acb2969623da62c9ed981694acef
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 278ea065097293542409dda0de3d3933
+    Hash: 23e7d9bdd7bf59b1de5fb29b204108c9
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 88cfc08e3747fbf59d96ebc5272b9c43
+    Hash: 5fe9acb2969623da62c9ed981694acef
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -42,9 +42,11 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
-- Assets/Lethal Creatures/Textures/CCHaz.mat
-- Assets/Lethal Creatures/Textures/CCGreen.mat
-- Assets/Lethal Creatures/Textures/CCRed.mat
+- Assets/Lethal Creatures/Textures/Mat_Haz.mat
+- Assets/Lethal Creatures/Textures/Mat_Green.mat
+- Assets/ModelReplacementSDK/AssetsToBuild/CreatureB.prefab
+- Assets/Lethal Creatures/Textures/Mat_Red.mat
+- Assets/ModelReplacementSDK/AssetsToBuild/CreatureC.prefab
 - Assets/ModelReplacementSDK/AssetsToBuild/CreatureA.prefab
-- Assets/Lethal Creatures/Textures/CCPajam.mat
+- Assets/Lethal Creatures/Textures/Mat_Pajam.mat
 Dependencies: []
