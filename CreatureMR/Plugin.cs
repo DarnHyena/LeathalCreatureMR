@@ -30,7 +30,7 @@ namespace CreatureModelReplacement
         {
             enableModelForAllSuits = config.Bind<bool>("Suits to Replace Settings", "Enable Model for all Suits", false, "Enable to replace every suit with Model. Set to false to specify suits");
             enableModelAsDefault = config.Bind<bool>("Suits to Replace Settings", "Enable Model as default", false, "Enable to replace every suit that hasn't been otherwise registered with Model.");
-            suitNamesToEnableModel = config.Bind<string>("Suits to Replace Settings", "Suits to enable Model for", "Default,Orange suit,Green suit,Pajama suit,Hazard suit", "For use with Moresuits, replace list with: CARed,CAGreen,CAHaz,CAPajam");
+            suitNamesToEnableModel = config.Bind<string>("Suits to Replace Settings", "Suits to enable Model for", "Default,Orange suit,Green suit,Pajama suit,Hazard suit,Purple Suit", "For use with Moresuits, replace list with: CARed,CAGreen,CAHaz,CAPajam,CAPurp");
             
         }
         private void Awake()

@@ -43,7 +43,7 @@
       <HintPath>..\..\..\..\..\..\Games (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="ModelReplacementAPI">
-      <HintPath>API\ModelReplacementAPI.dll</HintPath>
+      <HintPath>ModelReplacementAPI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.InputSystem">
       <HintPath>..\..\..\..\..\..\Games (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Unity.InputSystem.dll</HintPath>

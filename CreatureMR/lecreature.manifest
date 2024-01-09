@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 4166423666
+CRC: 2670985378
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 5fe9acb2969623da62c9ed981694acef
+    Hash: 0a4a62ceff2b1d4163821ce51a7d4e2c
   TypeTreeHash:
     serializedVersion: 2
     Hash: 23e7d9bdd7bf59b1de5fb29b204108c9
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: 5fe9acb2969623da62c9ed981694acef
+    Hash: 0a4a62ceff2b1d4163821ce51a7d4e2c
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -42,10 +42,18 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
+- Assets/Lethal Creatures/Textures/SuitA_Base.png
+- Assets/Lethal Creatures/Textures/MaskA_Hood.png
 - Assets/Lethal Creatures/Textures/Mat_Haz.mat
+- Assets/Lethal Creatures/Textures/Mat_Grunt.mat
 - Assets/Lethal Creatures/Textures/Mat_Green.mat
 - Assets/ModelReplacementSDK/AssetsToBuild/CreatureB.prefab
+- Assets/Lethal Creatures/Textures/MaskA_SuitB.png
+- Assets/Lethal Creatures/Textures/MaskA_SuitA.png
+- Assets/Lethal Creatures/Textures/Mat_Purp.mat
+- Assets/Lethal Creatures/Textures/MaskA_Lens.png
 - Assets/Lethal Creatures/Textures/Mat_Red.mat
+- Assets/Lethal Creatures/Textures/MaskA_Tank.png
 - Assets/ModelReplacementSDK/AssetsToBuild/CreatureC.prefab
 - Assets/ModelReplacementSDK/AssetsToBuild/CreatureA.prefab
 - Assets/Lethal Creatures/Textures/Mat_Pajam.mat
