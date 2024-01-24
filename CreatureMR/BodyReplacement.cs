@@ -24,36 +24,36 @@ namespace CreatureModelReplacement
                 case "CAGreen": // Duplicate to allow for swapping between default and moresuit
                     replacementMat = Assets.MainAssetBundle.LoadAsset<Material>("Mat_Green");
                     break;
-                    //===//
+                    //=====//
                 case "Hazard suit":
                     replacementMat = Assets.MainAssetBundle.LoadAsset<Material>("Mat_Haz");
                     break;
                 case "CAHaz":
                     replacementMat = Assets.MainAssetBundle.LoadAsset<Material>("Mat_Haz");
                     break;
-                    //===//
+                    //=====//
                 case "Pajama suit":
                     replacementMat = Assets.MainAssetBundle.LoadAsset<Material>("Mat_Pajam");
                     break;
                 case "CAPajam":
                     replacementMat = Assets.MainAssetBundle.LoadAsset<Material>("Mat_Pajam");
                     break;
-                    //===//
+                    //=====//
                 case "Purple Suit":
                     replacementMat = Assets.MainAssetBundle.LoadAsset<Material>("Mat_Purp");
                     break;
                 case "CAPurp":
                     replacementMat = Assets.MainAssetBundle.LoadAsset<Material>("Mat_Purp");
                     break;
-                    //===//
+                    //=====//
                 case "CARed":
                     replacementMat = Assets.MainAssetBundle.LoadAsset<Material>("Mat_Red");
                     break;
                 case "Orange suit":
                     replacementMat = Assets.MainAssetBundle.LoadAsset<Material>("Mat_Red");
                     break;
-                    //===//
-                default:
+                    //=====//
+                default: // Default suit you spawn in as
                     replacementMat = Assets.MainAssetBundle.LoadAsset<Material>("Mat_Red");
                     break;
             }
