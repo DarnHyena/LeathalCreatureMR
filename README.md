@@ -1,3 +1,5 @@
+https://github.com/DarnHyena/LeathalCreatureMR/tree/Lethal-Creature-Classic
+
 # Lethal Creatures
 Changes the player to a custom model
 
@@ -16,7 +18,3 @@ ToDo
 
 Bugs
 * Item offsets are a lil hit and miss
-
-
-## Special thanks to
-Zoomy, Bizzle, Spooky, NepuShiro, 753, Bobbie, and Hyst for their work on the code of the original Lethal Creature mod.

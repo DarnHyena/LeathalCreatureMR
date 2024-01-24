@@ -12,7 +12,7 @@ namespace CreatureModelReplacement
 {
 
 
-    [BepInPlugin("CreatureReplacement", "Cackle Crew", "2.0.0")] //Name of Config / Name of Mod / Version number
+    [BepInPlugin("CreatureReplacement", "Cackle Crew", "2.1.1")] //Name of Config / Name of Mod / Version number
     [BepInDependency("meow.ModelReplacementAPI", BepInDependency.DependencyFlags.HardDependency)]
 
     
@@ -67,7 +67,7 @@ namespace CreatureModelReplacement
     }
     public static class Assets
     {
-        // Replace mbundle with the Asset Bundle Name from your unity project 
+        // Replace lecreature with the Asset Bundle Name from your unity project 
         public static string mainAssetBundleName = "lecreature";
         public static AssetBundle MainAssetBundle = null;
 
