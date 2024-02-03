@@ -19,4 +19,4 @@ Bugs
 * Item offsets are a lil hit and miss
 
 
-## Credit to ScottyFox for customizaton system
+## Credit to ScottyFoxArt for the customizaton system
