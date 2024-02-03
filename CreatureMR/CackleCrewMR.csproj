@@ -22,10 +22,11 @@
   <ItemGroup>
     <None Remove="lecreature" />
     <None Remove="lecreature.manifest" />
+    <None Remove="lecustomization" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="lecreature" />
-    <EmbeddedResource Include="lecreature.manifest" />
+    <EmbeddedResource Include="lecustomization" />
   </ItemGroup>
   
   <ItemGroup>
@@ -54,8 +55,14 @@
     <Reference Include="Unity.Netcode.Runtime">
       <HintPath>..\..\..\..\..\..\Games (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Unity.Netcode.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>..\..\..\..\..\..\Games (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\..\..\Games (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\..\..\..\..\..\Games (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <!-- Uncomment this section ande delete the ModeReplacementAPI.dll reference if you plan on cloning ModeReplacementAPI alongside your mod

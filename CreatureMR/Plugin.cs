@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Reflection;
 using ModelReplacement;
 using BepInEx.Configuration;
-using System;
+using CackleCrew.ThisIsMagical;
 
 //using System.Numerics;
 
@@ -12,10 +12,10 @@ namespace CreatureModelReplacement
 {
 
 
-    [BepInPlugin("CreatureReplacement", "Cackle Crew", "2.0.0")] //Name of Config / Name of Mod / Version number
+    [BepInPlugin("CreatureReplacement", "Cackle Crew", "3.0.0")] //Name of Config / Name of Mod / Version number
     [BepInDependency("meow.ModelReplacementAPI", BepInDependency.DependencyFlags.HardDependency)]
 
-    
+
     public class Plugin : BaseUnityPlugin
     {
         public static ConfigFile config;
@@ -24,14 +24,14 @@ namespace CreatureModelReplacement
         public static ConfigEntry<bool> enableModelForAllSuits { get; private set; }
         public static ConfigEntry<bool> enableModelAsDefault { get; private set; }
         public static ConfigEntry<string> suitNamesToEnableModel { get; private set; }
-        
+
 
         private static void InitConfig()
         {
             enableModelForAllSuits = config.Bind<bool>("Suits to Replace Settings", "Enable Model for all Suits", false, "Enable to replace every suit with Model. Set to false to specify suits");
             enableModelAsDefault = config.Bind<bool>("Suits to Replace Settings", "Enable Model as default", false, "Enable to replace every suit that hasn't been otherwise registered with Model.");
-            suitNamesToEnableModel = config.Bind<string>("Suits to Replace Settings", "Suits to enable Model for", "Orange suit,Green suit,Pajama suit,Hazard suit", "For use with Moresuits, replace list with: CARed,CAGreen,CAHaz,CAPajam");
-            
+            suitNamesToEnableModel = config.Bind<string>("Suits to Replace Settings", "Suits to enable Model for", "Default,Orange suit,Green suit,Pajama suit,Hazard suit,Purple Suit", "For use with Moresuits, replace list with: CARed,CAGreen,CAHaz,CAPajam,CAPurp");
+
         }
         private void Awake()
         {
@@ -46,7 +46,7 @@ namespace CreatureModelReplacement
                 ModelReplacementAPI.RegisterModelReplacementOverride(typeof(BodyReplacement));
 
             }
-            
+
             if (enableModelAsDefault.Value)
             {
                 ModelReplacementAPI.RegisterModelReplacementDefault(typeof(BodyReplacement));
@@ -58,18 +58,22 @@ namespace CreatureModelReplacement
             {
                 ModelReplacementAPI.RegisterSuitModelReplacement(item, typeof(BodyReplacement));
             }
-            
-            
+
+
             Harmony harmony = new Harmony("LeCreature");
             harmony.PatchAll();
-            Logger.LogInfo($"Plugin {"CreaturelReplacement"} is loaded!");
+            //Setup Customization...!
+            Options.Init();
+            Logger.LogInfo($"Plugin {"CreatureReplacement"} is loaded!");
         }
     }
     public static class Assets
     {
-        // Replace mbundle with the Asset Bundle Name from your unity project 
+        // Replace lecreature with the Asset Bundle Name from your unity project 
         public static string mainAssetBundleName = "lecreature";
+        public static string customizationAssetBundleName = "lecustomization";
         public static AssetBundle MainAssetBundle = null;
+        public static AssetBundle CustomizationAssetBundle = null;
 
         private static string GetAssemblyName() => Assembly.GetExecutingAssembly().FullName.Split(',')[0];
         public static void PopulateAssets()
@@ -79,6 +83,14 @@ namespace CreatureModelReplacement
                 using (var assetStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(GetAssemblyName() + "." + mainAssetBundleName))
                 {
                     MainAssetBundle = AssetBundle.LoadFromStream(assetStream);
+                }
+
+            }
+            if (CustomizationAssetBundle == null)
+            {
+                using (var assetStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(GetAssemblyName() + "." + customizationAssetBundleName))
+                {
+                    CustomizationAssetBundle = AssetBundle.LoadFromStream(assetStream);
                 }
 
             }
