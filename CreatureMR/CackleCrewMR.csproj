@@ -22,10 +22,11 @@
   <ItemGroup>
     <None Remove="lecreature" />
     <None Remove="lecreature.manifest" />
+    <None Remove="lecustomization" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="lecreature" />
-    <EmbeddedResource Include="lecreature.manifest" />
+    <EmbeddedResource Include="lecustomization" />
   </ItemGroup>
   
   <ItemGroup>
