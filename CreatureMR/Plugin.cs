@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Reflection;
 using ModelReplacement;
 using BepInEx.Configuration;
-using System;
+using CackleCrew.ThisIsMagical;
 
 //using System.Numerics;
 
@@ -12,10 +12,10 @@ namespace CreatureModelReplacement
 {
 
 
-    [BepInPlugin("CreatureReplacement", "Cackle Crew", "2.0.0")] //Name of Config / Name of Mod / Version number
+    [BepInPlugin("CreatureReplacement", "Cackle Crew", "3.0.0")] //Name of Config / Name of Mod / Version number
     [BepInDependency("meow.ModelReplacementAPI", BepInDependency.DependencyFlags.HardDependency)]
-
-    
+    //SoftDependency makes sure MoreSuits is loaded before us. This also makes it so we DONT need MoreSuits.
+    [BepInDependency("x753.More_Suits", BepInDependency.DependencyFlags.SoftDependency)]
     public class Plugin : BaseUnityPlugin
     {
         public static ConfigFile config;
@@ -62,6 +62,8 @@ namespace CreatureModelReplacement
             
             Harmony harmony = new Harmony("LeCreature");
             harmony.PatchAll();
+            //Setup Customization...!
+            Options.Init();
             Logger.LogInfo($"Plugin {"CreaturelReplacement"} is loaded!");
         }
     }
@@ -69,7 +71,9 @@ namespace CreatureModelReplacement
     {
         // Replace mbundle with the Asset Bundle Name from your unity project 
         public static string mainAssetBundleName = "lecreature";
+        public static string customizationAssetBundleName = "lecustomization";
         public static AssetBundle MainAssetBundle = null;
+        public static AssetBundle CustomizationAssetBundle = null;
 
         private static string GetAssemblyName() => Assembly.GetExecutingAssembly().FullName.Split(',')[0];
         public static void PopulateAssets()
@@ -79,6 +83,14 @@ namespace CreatureModelReplacement
                 using (var assetStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(GetAssemblyName() + "." + mainAssetBundleName))
                 {
                     MainAssetBundle = AssetBundle.LoadFromStream(assetStream);
+                }
+
+            }
+            if (CustomizationAssetBundle == null)
+            {
+                using (var assetStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(GetAssemblyName() + "." + customizationAssetBundleName))
+                {
+                    CustomizationAssetBundle = AssetBundle.LoadFromStream(assetStream);
                 }
 
             }
