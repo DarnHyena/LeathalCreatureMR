@@ -1,17 +1,11 @@
 ﻿using UnityEngine;
 using CackleCrew.ThisIsMagical;
 using UnityEngine.UI;
+using UnityEngine.InputSystem.XR;
+using CackleCrewMR.Helpers;
 
 namespace CackleCrew.UI
 {
-    class CackleCrewUITogglerHandler : MonoBehaviour
-    {
-        Button button;
-        void Start()
-        {
-
-        }
-    }
     class CackleCrewUIHandler : MonoBehaviour
     {
         public ModelPickerUIHandler modelPicker;
@@ -26,25 +20,30 @@ namespace CackleCrew.UI
         public MenuToggleUIHandler patternColor;
         public MenuToggleUIHandler paintOption;
         public MenuToggleUIHandler paintColor;
+        public ProfileSavesUIHandler profileSaves;
         public Toggle useOutfit;
         public Button exitButton;
+        public GameObject optionHider;
+        public bool initialized = false;
         void Start()
         {
             //PAIR
             modelPicker = transform.Find("CrewSelection").gameObject.AddComponent<ModelPickerUIHandler>();
-            colorPicker = transform.Find("ColorPicker").gameObject.AddComponent<ColorPickerUIHandler>();
-            optionPicker = transform.Find("OptionPicker").gameObject.AddComponent<OptionsPickerUIHandler>();
-            clipboardHandler = transform.Find("ClipboardComponent").gameObject.AddComponent<ClipboardUIHandler>();
-            suitPrimaryColor = transform.Find("SuitOptions").Find("PrimaryColor").gameObject.AddComponent<MenuToggleUIHandler>();
-            suitSecondaryColor = transform.Find("SuitOptions").Find("SecondaryColor").gameObject.AddComponent<MenuToggleUIHandler>();
-            lensColor = transform.Find("GearOptions").Find("LensColor").gameObject.AddComponent<MenuToggleUIHandler>();
-            tankColor = transform.Find("GearOptions").Find("TankColor").gameObject.AddComponent<MenuToggleUIHandler>();
-            patternOption = transform.Find("PatternOptions").Find("PatternOption").gameObject.AddComponent<MenuToggleUIHandler>();
-            patternColor = transform.Find("PatternOptions").Find("PatternColor").gameObject.AddComponent<MenuToggleUIHandler>();
-            paintOption = transform.Find("MarkingOptions").Find("MarkingOption").gameObject.AddComponent<MenuToggleUIHandler>();
-            paintColor = transform.Find("MarkingOptions").Find("MarkingColor").gameObject.AddComponent<MenuToggleUIHandler>();
+            colorPicker = transform.Find("ColorStuff/ColorPicker").gameObject.AddComponent<ColorPickerUIHandler>();
+            optionPicker = transform.Find("ColorStuff/OptionPicker").gameObject.AddComponent<OptionsPickerUIHandler>();
+            clipboardHandler = transform.Find("Profiles/ClipboardComponent").gameObject.AddComponent<ClipboardUIHandler>();
+            suitPrimaryColor = transform.Find("ColorStuff/SuitOptions/PrimaryColor").gameObject.AddComponent<MenuToggleUIHandler>();
+            suitSecondaryColor = transform.Find("ColorStuff/SuitOptions/SecondaryColor").gameObject.AddComponent<MenuToggleUIHandler>();
+            lensColor = transform.Find("ColorStuff/GearOptions/LensColor").gameObject.AddComponent<MenuToggleUIHandler>();
+            tankColor = transform.Find("ColorStuff/GearOptions/TankColor").gameObject.AddComponent<MenuToggleUIHandler>();
+            patternOption = transform.Find("ColorStuff/PatternOptions/PatternOption").gameObject.AddComponent<MenuToggleUIHandler>();
+            patternColor = transform.Find("ColorStuff/PatternOptions/PatternColor").gameObject.AddComponent<MenuToggleUIHandler>();
+            paintOption = transform.Find("ColorStuff/MarkingOptions/MarkingOption").gameObject.AddComponent<MenuToggleUIHandler>();
+            paintColor = transform.Find("ColorStuff/MarkingOptions/MarkingColor").gameObject.AddComponent<MenuToggleUIHandler>();
+            profileSaves = transform.Find("Profiles/ProfileList").gameObject.AddComponent<ProfileSavesUIHandler>();
             useOutfit = transform.Find("UseOutfits").GetComponent<Toggle>();
             exitButton = transform.Find("Back").gameObject.GetComponent<Button>();
+            optionHider = transform.Find("SuitBGone").gameObject;
             //Targets
             suitPrimaryColor.target = colorPicker.transform;
             suitSecondaryColor.target = colorPicker.transform;
@@ -71,12 +70,62 @@ namespace CackleCrew.UI
             optionPicker.Init();
             //
             clipboardHandler.Init();
+            //
+            profileSaves.Init();
+            profileSaves.RegisterProfileOption("A", "ProA");
+            profileSaves.RegisterProfileOption("B", "ProB");
+            profileSaves.RegisterProfileOption("C", "ProC");
+            profileSaves.RegisterProfileOption("D", "ProD");
+            profileSaves.OnSaveClicked += SaveConfig;
+            profileSaves.OnLoadClicked += LoadConfig;
             //Hide
             colorPicker.gameObject.SetActive(false);
             optionPicker.gameObject.SetActive(false);
             //Exit
             exitButton.onClick.AddListener(UIManager.CrewUIExitButtonClicked);
+            useOutfit.onValueChanged.AddListener(ToggleCustomization);
             //Fetch_InitialProfile
+            LoadDefaultConfig();
+            initialized = true;
+        }
+        public void ToggleCustomization(bool enabled)
+        {
+            suitPrimaryColor.gameObject.SetActive(!enabled);
+            suitSecondaryColor.gameObject.SetActive(!enabled);
+            lensColor.gameObject.SetActive(!enabled);
+            tankColor.gameObject.SetActive(!enabled);
+            patternOption.gameObject.SetActive(!enabled);
+            patternColor.gameObject.SetActive(!enabled);
+            paintOption.gameObject.SetActive(!enabled);
+            paintColor.gameObject.SetActive(!enabled);
+            optionHider.SetActive(enabled);
+        }
+        public void SaveConfig()
+        {
+            Debug.Log("Save Config");
+            var controller = StartOfRound.Instance.localPlayerController;
+            string ourProfile = $"{controller.OwnerClientId}:Config";
+            ProfileHelper.TouchPlayerProfile(ourProfile);
+            SavedProfileHelper.UpdateConfig(ourProfile);
+            SavedProfileHelper.SaveConfig(profileSaves.currentOption);
+        }
+        public void LoadConfig()
+        {
+            Debug.Log("Load Config");
+            var controller = StartOfRound.Instance.localPlayerController;
+            string ourProfile = $"{controller.OwnerClientId}:Config";
+            ProfileHelper.TouchPlayerProfile(ourProfile);
+            SavedProfileHelper.LoadConfig(profileSaves.currentOption);
+            SavedProfileHelper.UpdatePlayerProfile(ourProfile);
+            UpdateProfileOptions();
+        }
+        public void LoadDefaultConfig()
+        {
+            Debug.Log("Load Default Config");
+            var controller = StartOfRound.Instance.localPlayerController;
+            string ourProfile = $"{controller.OwnerClientId}:Config";
+            ProfileHelper.TouchPlayerProfile(ourProfile);
+            SavedProfileHelper.UpdatePlayerProfile(ourProfile);
             UpdateProfileOptions();
         }
         public void UpdateProfileOptions()
@@ -86,14 +135,8 @@ namespace CackleCrew.UI
             var controller = StartOfRound.Instance.localPlayerController;
             string ourProfile = $"{controller.OwnerClientId}:Config";
             ProfileHelper.TouchPlayerProfile(ourProfile);
-            if (ProfileKit.TryGetData(ourProfile, "OUTFIT", out var outfit))
-            {
-                useOutfit.isOn = outfit != "TRUE";
-            }
-            else
-            {
-                useOutfit.isOn = true;
-            }
+            useOutfit.isOn = !SavedProfileHelper.UseOutfits;
+            ToggleCustomization(useOutfit.isOn);
             if (ProfileKit.TryGetData(ourProfile, "PRIMARY", out var primary) && ColorUtility.TryParseHtmlString(primary, out var primaryColor))
                 this.suitPrimaryColor.SetColor(primaryColor);
             if (ProfileKit.TryGetData(ourProfile, "HOOD", out var hood) && ColorUtility.TryParseHtmlString(hood, out var hoodColor))
@@ -132,16 +175,18 @@ namespace CackleCrew.UI
             ProfileKit.SetData(ourProfile, "PATTERN", patternOption.data);
             ProfileKit.SetData(ourProfile, "PAINT", paintOption.data);
             ProfileKit.SetData(ourProfile, "MODEL", modelPicker.selected);
-
-            if (!useOutfit.isOn)
+            ProfileKit.ClearData(ourProfile, "OUTFIT");
+            SavedProfileHelper.UpdateConfig(ourProfile);
+            if (!useOutfit.isOn || (!initialized && !SavedProfileHelper.UseOutfits))
             {
                 ProfileKit.SetData(ourProfile, "OUTFIT", "TRUE");
+                SavedProfileHelper.UseOutfits = true;
             }
             else
             {
-                ProfileKit.ClearData(ourProfile, "OUTFIT");
+                SavedProfileHelper.UseOutfits = false;
             }
         }
     }
-    
+
 }

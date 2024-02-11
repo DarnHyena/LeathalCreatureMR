@@ -1,4 +1,5 @@
 ﻿using CackleCrew.ThisIsMagical;
+using CackleCrewMR.Helpers;
 using GameNetcodeStuff;
 using UnityEngine;
 
@@ -12,7 +13,29 @@ namespace CackleCrew.Helpers
             //Profile Stuff
             ulong ourID = controller.OwnerClientId;
             string ourProfile = $"{ourID}:Config";
+            bool isNewProfile = !ProfileKit.TryGetProfile(ourProfile, out _);
             ProfileHelper.TouchPlayerProfile(ourProfile);
+            //If the profile is first initiated, Let's put our saved profile in!
+            Debug.Log($"IsNewProfile={isNewProfile}");
+            Debug.Log($"IsLocalPlayer={controller.IsLocalPlayer}");
+            Debug.Log($"OwnerClientId={StartOfRound.Instance.OwnerClientId}");
+            Debug.Log($"OwnerClientId={ourID}");
+            //Old Method here <-->
+            //StartOfRound.Instance.localPlayerController.OwnerClientId == ourID)
+            //Have to Test if this works -->
+            if (isNewProfile && StartOfRound.Instance.OwnerClientId == ourID)
+            {
+                Debug.Log("THIS IS A NEW PROFILE!!!!");
+                SavedProfileHelper.UpdatePlayerProfile(ourProfile);
+                if (SavedProfileHelper.UseOutfits)
+                {
+                    ProfileKit.SetData(ourProfile, "OUTFIT", "TRUE");
+                }
+            }
+            else
+            {
+                Debug.Log("SOMETHING WENT WRONG?!");
+            }
             string ourModelName = ProfileKit.GetData(ourProfile, "MODEL");
             if (string.IsNullOrWhiteSpace(ourModelName))
             {
@@ -39,10 +62,6 @@ namespace CackleCrew.Helpers
             {
                 outfitProfile = ourProfile;
             }
-            else
-            {
-                ProfileKit.ReflectProfile(ourProfile, suitName);
-            }
             if (!MaterialKit.TryGetMaterial($"{ourModelName}:{outfitProfile}", out var material))
             {
                 material = new Material(renderers[0].material);
@@ -66,20 +85,20 @@ namespace CackleCrew.Helpers
             material.SetColor("_PaintColor", GetColorFromSet(profileName, "PAINTCOLOR"));
             ClearKeywords(ref material, "PATTERN");
             var pattern = GetConfigFromProfile(profileName, "PATTERN");
-            SetKeyword(ref material, "PATTERN",pattern);
+            SetKeyword(ref material, "PATTERN", pattern);
             ClearKeywords(ref material, "PAINT");
             var paint = GetConfigFromProfile(profileName, "PAINT");
             SetKeyword(ref material, "PAINT", paint);
         }
-        public static void ClearKeywords(ref Material material,string keyword)
+        public static void ClearKeywords(ref Material material, string keyword)
         {
-            foreach(var enabledKeyword in material.enabledKeywords)
+            foreach (var enabledKeyword in material.enabledKeywords)
             {
                 if (enabledKeyword.name.Contains(keyword))
                     material.DisableKeyword(enabledKeyword.name);
             }
         }
-        public static void SetKeyword(ref Material material, string keyword,string option)
+        public static void SetKeyword(ref Material material, string keyword, string option)
         {
             material.EnableKeyword($"_{keyword}_{option}");
         }

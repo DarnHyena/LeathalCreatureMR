@@ -38,33 +38,33 @@
     <PackageReference Include="UnityEngine.Modules" Version="2022.3.9" IncludeAssets="compile" />
     <PackageReference Include="HarmonyX" Version="2.10.2" IncludeAssets="compile" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\..\..\Games (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="ModelReplacementAPI">
-      <HintPath>API\ModelReplacementAPI.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.InputSystem">
-      <HintPath>..\..\..\..\..\..\Games (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Unity.InputSystem.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.InputSystem.ForUI">
-      <HintPath>..\..\..\..\..\..\Games (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Unity.InputSystem.ForUI.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Netcode.Runtime">
-      <HintPath>..\..\..\..\..\..\Games (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Unity.Netcode.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro">
-      <HintPath>..\..\..\..\..\..\Games (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\Unity.TextMeshPro.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\..\..\Games (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\..\..\..\Games (x86)\Steam\steamapps\common\Lethal Company\Lethal Company_Data\Managed\UnityEngine.UI.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="Assembly-CSharp">
+			<HintPath>$(LethalCompanyPath)Lethal Company_Data\Managed\Assembly-CSharp.dll</HintPath>
+		</Reference>
+		<Reference Include="ModelReplacementAPI">
+			<HintPath>$(LethalCompanyPath)API\ModelReplacementAPI.dll</HintPath>
+		</Reference>
+		<Reference Include="Unity.InputSystem">
+			<HintPath>$(LethalCompanyPath)Lethal Company_Data\Managed\Unity.InputSystem.dll</HintPath>
+		</Reference>
+		<Reference Include="Unity.InputSystem.ForUI">
+			<HintPath>$(LethalCompanyPath)Lethal Company_Data\Managed\Unity.InputSystem.ForUI.dll</HintPath>
+		</Reference>
+		<Reference Include="Unity.Netcode.Runtime">
+			<HintPath>$(LethalCompanyPath)Lethal Company_Data\Managed\Unity.Netcode.Runtime.dll</HintPath>
+		</Reference>
+		<Reference Include="Unity.TextMeshPro">
+			<HintPath>$(LethalCompanyPath)Lethal Company_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine">
+			<HintPath>$(LethalCompanyPath)Lethal Company_Data\Managed\UnityEngine.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.UI">
+			<HintPath>$(LethalCompanyPath)Lethal Company_Data\Managed\UnityEngine.UI.dll</HintPath>
+		</Reference>
+	</ItemGroup>
   <!-- Uncomment this section ande delete the ModeReplacementAPI.dll reference if you plan on cloning ModeReplacementAPI alongside your mod
   <ItemGroup>
     <ProjectReference Include="..\ModelReplacementAPI\ModelReplacementAPI.csproj" />

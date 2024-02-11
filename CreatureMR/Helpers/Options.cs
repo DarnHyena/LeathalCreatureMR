@@ -1,4 +1,5 @@
-﻿using CreatureModelReplacement;
+﻿using CackleCrewMR.Helpers;
+using CreatureModelReplacement;
 using HarmonyLib;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace CackleCrew.ThisIsMagical
         {
             SetDefaultProfile();
             RegisterAssets();
+            SavedProfileHelper.Init();
         }
         public static void RegisterAssets()
         {

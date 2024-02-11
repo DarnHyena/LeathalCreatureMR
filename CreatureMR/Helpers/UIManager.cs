@@ -18,13 +18,13 @@ namespace CackleCrew.UI
             currentMenuManager = quickMenuManager;
             if (cacklecrewUI == null)
             {
-                var cacklecrewUIPrefab = Assets.CustomizationAssetBundle.LoadAsset<GameObject>("CackleCrewUIDARN");
+                var cacklecrewUIPrefab = Assets.CustomizationAssetBundle.LoadAsset<GameObject>("CCUIProfile");
                 var cacklecrewUIGameObject = GameObject.Instantiate(cacklecrewUIPrefab, quickMenuManager.menuContainer.transform);
                 cacklecrewUI = cacklecrewUIGameObject.AddComponent<CackleCrewUIHandler>();
             }
             if (cacklecrewtogglerUI == null)
             {
-                var cacklecrewtogglerUIPrefab = Assets.CustomizationAssetBundle.LoadAsset<GameObject>("CackleCrewToggle");
+                var cacklecrewtogglerUIPrefab = Assets.CustomizationAssetBundle.LoadAsset<GameObject>("CCToggle");
                 var cacklecrewtogglerUIGameObject = GameObject.Instantiate(cacklecrewtogglerUIPrefab, quickMenuManager.menuContainer.transform);
                 cacklecrewtogglerUI = cacklecrewtogglerUIGameObject.AddComponent<CackleCrewUITogglerHandler>();
                 cacklecrewtogglerUI.GetComponent<Button>().onClick.AddListener(ToggleCrewUIButtonClicked);

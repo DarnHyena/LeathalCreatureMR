@@ -10,13 +10,13 @@ namespace CackleCrew.UI
         public Button copyButton;
         public void Init()
         {
-            pasteButton = transform.Find("Load").GetComponentInChildren<Button>();
+            pasteButton = transform.Find("Paste").GetComponentInChildren<Button>();
             copyButton = transform.Find("Copy").GetComponentInChildren<Button>();
-            pasteButton.onClick.AddListener(LoadProfileFromClipboard);
+            pasteButton.onClick.AddListener(PasteProfileFromClipboard);
             copyButton.onClick.AddListener(CopyProfileToClipboard);
         }
 
-        void LoadProfileFromClipboard()
+        void PasteProfileFromClipboard()
         {
             string clipboard = FromClipboard();
             var controller = StartOfRound.Instance.localPlayerController;
