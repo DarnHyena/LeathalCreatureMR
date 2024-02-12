@@ -25,20 +25,20 @@ namespace CackleCrew.ThisIsMagical
         public static void RegisterVanillaMaterials()
         {
             //RegisterSuitProfile("SUIT", "#PRIMARY", "#SECONDARY", "#TANK", "#LENS", "#PATTERNCOLOR", "#PAINTCOLOR", "PAINT SET", "PATTERN SET");
-            RegisterSuitProfile("Default", "#B76912", "#DBBCA2", "#FF9B31", "#1DD44D", "#FDD9C9", "#E0BB9F", "A", "None");
-            RegisterSuitProfile("Orange suit", "#B76912", "#DBBCA2", "#FF9B31", "#1DD44D", "#FDD9C9", "#E0BB9F", "A", "None");
-            RegisterSuitProfile("Green suit", "#6D8500", "#F1DCC7", "#D67825", "#FFD6C6", "#8CB02A", "#B9835A", "A", "B");
-            RegisterSuitProfile("Hazard suit", "#F3B156", "#F3B156", "#B74A38", "#FF4400", "#C57644", "#4F3427", "C", "C");
-            RegisterSuitProfile("Pajama suit", "#68A18D", "#E5D4C1", "#F56C0F", "#FD9E2C", "#E2D9CC", "#7D5435", "A", "A");
-            RegisterSuitProfile("Purple Suit", "#8C3EC3", "#8C3EC3", "#CF8224", "#FF9C00", "#D49FA5", "#BF8B64", "B", "D");
+            RegisterSuitProfile("Default", "#843b08", "#9e6944", "#FF9B31", "#1DD44D", "#b77a54", "#E0BB9F", "A", "None");
+            RegisterSuitProfile("Orange suit", "#843b08", "#9e6944", "#FF9B31", "#1DD44D", "#b77a54", "#E0BB9F", "A", "None");
+            RegisterSuitProfile("Green suit", "#4f4b00", "#ae7b54", "#D67825", "#FFD6C6", "#656312", "#B9835A", "A", "B");
+            RegisterSuitProfile("Hazard suit", "#f3b156", "#af6324", "#B74A38", "#FF4400", "#8e421d", "#4F3427", "C", "C");
+            RegisterSuitProfile("Pajama suit", "#4b5a3b", "#a57751", "#F56C0F", "#FD9E2C", "#a37a56", "#7D5435", "A", "A");
+            RegisterSuitProfile("Purple Suit", "#652352", "#652352", "#CF8224", "#FF9C00", "#995945", "#BF8B64", "B", "D");
         }
         public static void RegisterMoreSuitsMaterials()
         {
-            RegisterSuitProfile("CARed", "#B76912", "#DBBCA2", "#FF9B31", "#1DD44D", "#FDD9C9", "#E0BB9F", "A", "None");
-            RegisterSuitProfile("CAGreen", "#6D8500", "#F1DCC7", "#D67825", "#FFD6C6", "#8CB02A", "#B9835A", "A", "B");
-            RegisterSuitProfile("CAHaz", "#F3B156", "#F3B156", "#B74A38", "#FF4400", "#C57644", "#4F3427", "C", "C");
-            RegisterSuitProfile("CAPajam", "#68A18D", "#E5D4C1", "#F56C0F", "#FD9E2C", "#E2D9CC", "#7D5435", "A", "A");
-            RegisterSuitProfile("CAPurple", "#8C3EC3", "#8C3EC3", "#CF8224", "#FF9C00", "#D49FA5", "#BF8B64", "B", "D");
+            RegisterSuitProfile("CARed", "#843b08", "#9e6944", "#FF9B31", "#1DD44D", "#b77a54", "#E0BB9F", "A", "None");
+            RegisterSuitProfile("CAGreen", "#4f4b00", "#ae7b54", "#D67825", "#FFD6C6", "#656312", "#B9835A", "A", "B");
+            RegisterSuitProfile("CAHaz", "#f3b156", "#af6324", "#B74A38", "#FF4400", "#8e421d", "#4F3427", "C", "C");
+            RegisterSuitProfile("CAPajam", "#4b5a3b", "#a57751", "#F56C0F", "#FD9E2C", "#a37a56", "#7D5435", "A", "A");
+            RegisterSuitProfile("CAPurple", "#652352", "#652352", "#CF8224", "#FF9C00", "#995945", "#BF8B64", "B", "D");
         }
         public static void RegisterVanillaModels()
         {

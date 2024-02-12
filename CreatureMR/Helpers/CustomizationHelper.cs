@@ -15,26 +15,15 @@ namespace CackleCrew.Helpers
             string ourProfile = $"{ourID}:Config";
             bool isNewProfile = !ProfileKit.TryGetProfile(ourProfile, out _);
             ProfileHelper.TouchPlayerProfile(ourProfile);
-            //If the profile is first initiated, Let's put our saved profile in!
-            Debug.Log($"IsNewProfile={isNewProfile}");
-            Debug.Log($"IsLocalPlayer={controller.IsLocalPlayer}");
-            Debug.Log($"OwnerClientId={StartOfRound.Instance.OwnerClientId}");
-            Debug.Log($"OwnerClientId={ourID}");
             //Old Method here <-->
             //StartOfRound.Instance.localPlayerController.OwnerClientId == ourID)
-            //Have to Test if this works -->
             if (isNewProfile && StartOfRound.Instance.OwnerClientId == ourID)
             {
-                Debug.Log("THIS IS A NEW PROFILE!!!!");
                 SavedProfileHelper.UpdatePlayerProfile(ourProfile);
                 if (SavedProfileHelper.UseOutfits)
                 {
                     ProfileKit.SetData(ourProfile, "OUTFIT", "TRUE");
                 }
-            }
-            else
-            {
-                Debug.Log("SOMETHING WENT WRONG?!");
             }
             string ourModelName = ProfileKit.GetData(ourProfile, "MODEL");
             if (string.IsNullOrWhiteSpace(ourModelName))

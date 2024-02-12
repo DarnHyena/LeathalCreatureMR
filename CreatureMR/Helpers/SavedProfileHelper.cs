@@ -47,6 +47,14 @@ namespace CackleCrewMR.Helpers
         {
             ProfileHelper.TouchPlayerProfile(profileName);
             ProfileKit.DeSerializeProfile_Tokens(profileName, currentConfig.Value);
+            if (UseOutfits)
+            {
+                ProfileKit.SetData(profileName, "OUTFIT", "TRUE");
+            }
+            else
+            {
+                ProfileKit.ClearData(profileName, "OUTFIT");
+            }
         }
         public static void UpdateConfig(string profileName)
         {

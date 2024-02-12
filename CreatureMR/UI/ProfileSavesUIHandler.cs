@@ -38,13 +38,9 @@ namespace CackleCrew.UI
         }
         public void RegisterProfileOption(string profileName, string child)
         {
-            Debug.Log($"Looking for {child}");
             var childTransform = transform.Find(child);
-            if (!childTransform) {
-                Debug.LogWarning($"Could Find! {child}");
+            if (!childTransform)
                 return;
-            }
-            Debug.Log($"Found {child}!");
             UIOption newOption = new UIOption
             {
                 button = childTransform.GetComponent<Button>(),
@@ -52,6 +48,10 @@ namespace CackleCrew.UI
             };
             newOption.button.onClick.AddListener(() => Option_OnClick(profileName));
             options.Add(profileName,newOption);
+            if(options.Count==1)
+            {
+                Option_OnClick(profileName);
+            }
         }
         public void Option_OnClick(string profileName)
         {

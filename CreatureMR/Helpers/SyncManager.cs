@@ -1,4 +1,5 @@
-﻿using GameNetcodeStuff;
+﻿using CackleCrewMR.Helpers;
+using GameNetcodeStuff;
 using HarmonyLib;
 using System.Collections.Generic;
 
@@ -11,6 +12,7 @@ namespace CackleCrew.ThisIsMagical
         {
             if (StartOfRound.Instance.localPlayerController.OwnerClientId == controller.OwnerClientId)
             {
+
                 SuitKit.SwitchSuitOfPlayer(controller, controller.currentSuitID);
                 SendPlayerConfig(controller);
             }
@@ -24,6 +26,8 @@ namespace CackleCrew.ThisIsMagical
             {
                 ProfileKit.CloneProfile("DEFAULT:Config", ourProfile);
             }
+            //Temp Fix Here//
+            SavedProfileHelper.UpdatePlayerProfile(ourProfile);
             string ourModelName = ProfileKit.GetData(ourProfile, "MODEL");
             tokens.Add(SerializationTag);
             tokens.Add(ourID.ToString());

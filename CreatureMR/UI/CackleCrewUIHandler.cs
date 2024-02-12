@@ -29,8 +29,8 @@ namespace CackleCrew.UI
         {
             //PAIR
             modelPicker = transform.Find("CrewSelection").gameObject.AddComponent<ModelPickerUIHandler>();
-            colorPicker = transform.Find("ColorStuff/ColorPicker").gameObject.AddComponent<ColorPickerUIHandler>();
-            optionPicker = transform.Find("ColorStuff/OptionPicker").gameObject.AddComponent<OptionsPickerUIHandler>();
+            colorPicker = transform.Find("Pickers/ColorPicker").gameObject.AddComponent<ColorPickerUIHandler>();
+            optionPicker = transform.Find("Pickers/OptionPicker").gameObject.AddComponent<OptionsPickerUIHandler>();
             clipboardHandler = transform.Find("Profiles/ClipboardComponent").gameObject.AddComponent<ClipboardUIHandler>();
             suitPrimaryColor = transform.Find("ColorStuff/SuitOptions/PrimaryColor").gameObject.AddComponent<MenuToggleUIHandler>();
             suitSecondaryColor = transform.Find("ColorStuff/SuitOptions/SecondaryColor").gameObject.AddComponent<MenuToggleUIHandler>();
@@ -102,16 +102,14 @@ namespace CackleCrew.UI
         }
         public void SaveConfig()
         {
-            Debug.Log("Save Config");
             var controller = StartOfRound.Instance.localPlayerController;
             string ourProfile = $"{controller.OwnerClientId}:Config";
-            ProfileHelper.TouchPlayerProfile(ourProfile);
+            ApplyProfileOptions();
             SavedProfileHelper.UpdateConfig(ourProfile);
             SavedProfileHelper.SaveConfig(profileSaves.currentOption);
         }
         public void LoadConfig()
         {
-            Debug.Log("Load Config");
             var controller = StartOfRound.Instance.localPlayerController;
             string ourProfile = $"{controller.OwnerClientId}:Config";
             ProfileHelper.TouchPlayerProfile(ourProfile);
@@ -121,7 +119,6 @@ namespace CackleCrew.UI
         }
         public void LoadDefaultConfig()
         {
-            Debug.Log("Load Default Config");
             var controller = StartOfRound.Instance.localPlayerController;
             string ourProfile = $"{controller.OwnerClientId}:Config";
             ProfileHelper.TouchPlayerProfile(ourProfile);
@@ -179,7 +176,6 @@ namespace CackleCrew.UI
             SavedProfileHelper.UpdateConfig(ourProfile);
             if (!useOutfit.isOn || (!initialized && !SavedProfileHelper.UseOutfits))
             {
-                ProfileKit.SetData(ourProfile, "OUTFIT", "TRUE");
                 SavedProfileHelper.UseOutfits = true;
             }
             else
