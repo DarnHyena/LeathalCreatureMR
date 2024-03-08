@@ -43,7 +43,9 @@ namespace CackleCrew.UI
         }
         void OnEnable()
         {
-            ChangeOption(ProfileHelper.GetModel());
+            var profile = ProfileHelper.TouchLocalPlayerProfile(out var player);
+            if (profile == null) return;
+            ChangeOption(profile.GetData("MODEL"));
         }
     }
 }

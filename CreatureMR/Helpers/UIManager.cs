@@ -34,13 +34,13 @@ namespace CackleCrew.UI
         {
             if (currentMenuManager != null)
             {
-                if (open)
+                if (open && !cacklecrewUI.gameObject.activeSelf)
                 {
                     currentMenuManager.mainButtonsPanel.SetActive(false);
                     currentMenuManager.EnableUIPanel(cacklecrewUI.gameObject);
                     cacklecrewUI.UpdateProfileOptions();
                 }
-                else
+                else if(!open && cacklecrewUI.gameObject.activeSelf)
                 {
                     currentMenuManager.mainButtonsPanel.SetActive(true);
                     currentMenuManager.DisableUIPanel(cacklecrewUI.gameObject);

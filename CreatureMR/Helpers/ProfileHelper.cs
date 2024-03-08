@@ -1,63 +1,99 @@
-﻿using HarmonyLib;
+﻿using GameNetcodeStuff;
+using HarmonyLib;
+using System.Diagnostics;
+using Unity.Netcode;
+using UnityEngine.InputSystem.XR;
+using UnityEngine.SocialPlatforms;
 
 namespace CackleCrew.ThisIsMagical
 {
     static class ProfileHelper
     {
-        public static void SwitchModel(string name)
+        public const string DEFAULT_PROFILE_ID = "DEFAULT";
+        public const string PROFILE_POSTFIX = ":Config";
+        public static string DefaultProfile
         {
-            if (ModelKit.HasModel(name))
+            get
             {
-
-                var controller = StartOfRound.Instance?.localPlayerController;
-                if (controller == null)
-                    return;
-                string ourProfile = $"{controller.OwnerClientId}:Config";
-                ForceSyncUpdate();
+                return DEFAULT_PROFILE_ID + PROFILE_POSTFIX;
             }
         }
-        public static string GetModel()
+        public static string LocalProfile
         {
-            var controller = StartOfRound.Instance?.localPlayerController;
-            if (controller == null)
-                return ModelKit.GetDefaultModel();
-            string ourProfile = $"{controller.OwnerClientId}:Config";
-            TouchPlayerProfile(ourProfile);
-            return ProfileKit.GetData(ourProfile, "MODEL");
+            get
+            {
+                return GetProfileName(TryGetLocalPlayer(out var player) ? 999999 : player.OwnerClientId);
+            }
+        }
+        public static string GetProfileName(ulong ownerClientID)
+        {
+            return ownerClientID + PROFILE_POSTFIX;
         }
         public static void ForceSyncUpdate()
         {
-            var controller = StartOfRound.Instance?.localPlayerController;
-            if (controller == null)
+            if (TouchLocalPlayerProfile(out var player) == null)
                 return;
-            string ourProfile = $"{controller.OwnerClientId}:Config";
-            TouchPlayerProfile(ourProfile);
-            ModelReplacement.ModelReplacementAPI.ResetPlayerModelReplacement(controller);
-            SyncManager.SyncPlayerConfig(controller);
+            ModelReplacement.ModelReplacementAPI.ResetPlayerModelReplacement(player);
+            SyncManager.SyncPlayerConfig(player);
         }
-        public static void TouchPlayerProfile(string profileName)
+        public static Profile TouchPlayerProfile(ulong ownerClientID, out PlayerControllerB player)
         {
-            if (!ProfileKit.TryGetProfile(profileName, out _))
+            if (!TryGetPlayer(ownerClientID, out player))
+                return null;
+            string profileName = GetProfileName(ownerClientID);
+            if (!Profile.TryGetProfile(profileName, out var profile))
+                profile = Profile.CloneProfile(profileName, DefaultProfile);
+            return profile;
+        }
+        public static Profile TouchPlayerProfile(string profileName)
+        {
+            if (!Profile.TryGetProfile(profileName, out var profile))
+                profile = Profile.CloneProfile(profileName, DefaultProfile);
+            return profile;
+        }
+        public static Profile TouchLocalPlayerProfile(out PlayerControllerB player)
+        {
+            if (!TryGetLocalPlayer(out player))
+                return null;
+            string profileName = GetProfileName(player.OwnerClientId);
+            return TouchPlayerProfile(profileName);
+        }
+        public static PlayerControllerB GetLocalPlayer()
+        {
+            return StartOfRound.Instance?.localPlayerController;
+        }
+        public static bool TryGetLocalPlayer(out PlayerControllerB player)
+        {
+            player = StartOfRound.Instance?.localPlayerController;
+            return player != null;
+        }
+        public static PlayerControllerB GetPlayer(ulong ownerClientID)
+        {
+            if (!StartOfRound.Instance.ClientPlayerList.TryGetValue(ownerClientID, out var controller_index))
+                return null;
+            return StartOfRound.Instance.allPlayerObjects[controller_index].GetComponent<PlayerControllerB>();
+        }
+        public static bool TryGetPlayer(ulong ownerClientID, out PlayerControllerB player)
+        {
+            player = GetPlayer(ownerClientID);
+            return player != null;
+        }
+        public static bool IsLocalPlayer(ulong ownerClientID)
+        {
+            if (StartOfRound.Instance.localPlayerController != null)
             {
-                ProfileKit.CloneProfile("DEFAULT:Config", profileName);
+                return StartOfRound.Instance.localPlayerController.OwnerClientId == ownerClientID;
             }
+            return StartOfRound.Instance.NetworkObjectId == ownerClientID;
         }
-    }
-    [HarmonyPatch]
-    static class CreatureSwitcher_Patches
-    {
-        /*[HarmonyPatch(typeof(PlayerControllerB), "ConnectClientToPlayerObject")]
-        [HarmonyPostfix]
-        private static void ConnectClientToPlayerObject_Postfix(PlayerControllerB __instance)
+        public static bool IsLocalPlayer(PlayerControllerB player)
         {
-            CreatureSwitcher.ourTracker = StartOfRound.Instance.StartCoroutine(CreatureSwitcher.StartTrackingSwitching());
-
+            return IsLocalPlayer(player.OwnerClientId);
         }
-        [HarmonyPatch(typeof(StartOfRound), "OnDestroy")]
-        [HarmonyPostfix]
-        public static void OnDestroy_Postfix(ref StartOfRound __instance)
+        public static bool IsServerHost()
         {
-            StartOfRound.Instance.StopCoroutine(CreatureSwitcher.ourTracker);
-        }*/
+            NetworkManager networkManager = HUDManager.Instance.NetworkManager;
+            return networkManager.IsServer || networkManager.IsHost;
+        }
     }
 }

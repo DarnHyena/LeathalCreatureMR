@@ -90,97 +90,89 @@ namespace CackleCrew.UI
         }
         public void ToggleCustomization(bool enabled)
         {
-            suitPrimaryColor.gameObject.SetActive(!enabled);
-            suitSecondaryColor.gameObject.SetActive(!enabled);
-            lensColor.gameObject.SetActive(!enabled);
-            tankColor.gameObject.SetActive(!enabled);
-            patternOption.gameObject.SetActive(!enabled);
-            patternColor.gameObject.SetActive(!enabled);
-            paintOption.gameObject.SetActive(!enabled);
-            paintColor.gameObject.SetActive(!enabled);
-            optionHider.SetActive(enabled);
+            suitPrimaryColor.gameObject.SetActive(enabled);
+            suitSecondaryColor.gameObject.SetActive(enabled);
+            lensColor.gameObject.SetActive(enabled);
+            tankColor.gameObject.SetActive(enabled);
+            patternOption.gameObject.SetActive(enabled);
+            patternColor.gameObject.SetActive(enabled);
+            paintOption.gameObject.SetActive(enabled);
+            paintColor.gameObject.SetActive(enabled);
+            optionHider.SetActive(!enabled);
         }
         public void SaveConfig()
         {
-            var controller = StartOfRound.Instance.localPlayerController;
-            string ourProfile = $"{controller.OwnerClientId}:Config";
+            var profile = ProfileHelper.TouchLocalPlayerProfile(out var player);
+            if (profile == null) return;
             ApplyProfileOptions();
-            SavedProfileHelper.UpdateConfig(ourProfile);
+            SavedProfileHelper.UpdateConfig(profile);
             SavedProfileHelper.SaveConfig(profileSaves.currentOption);
         }
         public void LoadConfig()
         {
-            var controller = StartOfRound.Instance.localPlayerController;
-            string ourProfile = $"{controller.OwnerClientId}:Config";
-            ProfileHelper.TouchPlayerProfile(ourProfile);
+            var profile = ProfileHelper.TouchLocalPlayerProfile(out var player);
+            if (profile == null) return;
             SavedProfileHelper.LoadConfig(profileSaves.currentOption);
-            SavedProfileHelper.UpdatePlayerProfile(ourProfile);
+            SavedProfileHelper.UpdatePlayerProfile(profile);
             UpdateProfileOptions();
         }
         public void LoadDefaultConfig()
         {
-            var controller = StartOfRound.Instance.localPlayerController;
-            string ourProfile = $"{controller.OwnerClientId}:Config";
-            ProfileHelper.TouchPlayerProfile(ourProfile);
-            SavedProfileHelper.UpdatePlayerProfile(ourProfile);
+            var profile = ProfileHelper.TouchLocalPlayerProfile(out var player);
+            if (profile == null) return;
+            SavedProfileHelper.UpdatePlayerProfile(profile);
             UpdateProfileOptions();
         }
         public void UpdateProfileOptions()
         {
             if (modelPicker == null)
                 return;
-            var controller = StartOfRound.Instance.localPlayerController;
-            string ourProfile = $"{controller.OwnerClientId}:Config";
-            ProfileHelper.TouchPlayerProfile(ourProfile);
-            useOutfit.isOn = !SavedProfileHelper.UseOutfits;
+            var profile = ProfileHelper.TouchLocalPlayerProfile(out var player);
+            if (profile == null) return;
+            useOutfit.isOn = SavedProfileHelper.UseOutfits;
             ToggleCustomization(useOutfit.isOn);
-            if (ProfileKit.TryGetData(ourProfile, "PRIMARY", out var primary) && ColorUtility.TryParseHtmlString(primary, out var primaryColor))
+            if (ColorUtility.TryParseHtmlString(profile.GetData("PRIMARY"), out var primaryColor))
                 this.suitPrimaryColor.SetColor(primaryColor);
-            if (ProfileKit.TryGetData(ourProfile, "HOOD", out var hood) && ColorUtility.TryParseHtmlString(hood, out var hoodColor))
+            if (ColorUtility.TryParseHtmlString(profile.GetData("HOOD"), out var hoodColor))
                 this.suitSecondaryColor.SetColor(hoodColor);
-            else if (ProfileKit.TryGetData(ourProfile, "SECONDARY", out var secondary) && ColorUtility.TryParseHtmlString(secondary, out var secondaryColor))
-                this.suitSecondaryColor.SetColor(secondaryColor);
-            if (ProfileKit.TryGetData(ourProfile, "LENS", out var lens) && ColorUtility.TryParseHtmlString(lens, out var lensColor))
+            if (ColorUtility.TryParseHtmlString(profile.GetData("LENS"), out var lensColor))
                 this.lensColor.SetColor(lensColor);
-            if (ProfileKit.TryGetData(ourProfile, "TANK", out var tank) && ColorUtility.TryParseHtmlString(tank, out var tankColor))
+            if (ColorUtility.TryParseHtmlString(profile.GetData("TANK"), out var tankColor))
                 this.tankColor.SetColor(tankColor);
-            if (ProfileKit.TryGetData(ourProfile, "SECONDARY", out var pattern) && ColorUtility.TryParseHtmlString(pattern, out var patternColor))
+            if (ColorUtility.TryParseHtmlString(profile.GetData("SECONDARY"), out var patternColor))
                 this.patternColor.SetColor(patternColor);
-            if (ProfileKit.TryGetData(ourProfile, "PAINTCOLOR", out var paint) && ColorUtility.TryParseHtmlString(paint, out var paintColor))
+            if (ColorUtility.TryParseHtmlString(profile.GetData("PAINTCOLOR"), out var paintColor))
                 this.paintColor.SetColor(paintColor);
-            if (ProfileKit.TryGetData(ourProfile, "PATTERN", out var patternOption))
-                this.patternOption.SetOption(patternOption);
-            if (ProfileKit.TryGetData(ourProfile, "PAINT", out var paintOption))
-                this.paintOption.SetOption(paintOption);
-            if (ProfileKit.TryGetData(ourProfile, "MODEL", out var modelOption))
-                this.modelPicker.ChangeOption(modelOption);
+            this.patternOption.SetOption(profile.GetData("PATTERN"));
+            this.paintOption.SetOption(profile.GetData("PAINT"));
+            this.modelPicker.ChangeOption(profile.GetData("MODEL"));
         }
         public void ApplyProfileOptions()
         {
             if (modelPicker == null)
                 return;
-            var controller = StartOfRound.Instance.localPlayerController;
-            string ourProfile = $"{controller.OwnerClientId}:Config";
-            ProfileHelper.TouchPlayerProfile(ourProfile);
-            ProfileKit.SetData(ourProfile, "PRIMARY", $"#{ColorUtility.ToHtmlStringRGB(suitPrimaryColor.shape.color)}");
-            ProfileKit.SetData(ourProfile, "HOOD", $"#{ColorUtility.ToHtmlStringRGB(suitSecondaryColor.shape.color)}");
-            ProfileKit.SetData(ourProfile, "LENS", $"#{ColorUtility.ToHtmlStringRGB(lensColor.shape.color)}");
-            ProfileKit.SetData(ourProfile, "TANK", $"#{ColorUtility.ToHtmlStringRGB(tankColor.shape.color)}");
-            ProfileKit.SetData(ourProfile, "SECONDARY", $"#{ColorUtility.ToHtmlStringRGB(patternColor.shape.color)}");
-            ProfileKit.SetData(ourProfile, "PAINTCOLOR", $"#{ColorUtility.ToHtmlStringRGB(paintColor.shape.color)}");
+            var profile = ProfileHelper.TouchLocalPlayerProfile(out var player);
+            if (profile == null) return;
+            profile.SetData("PRIMARY", ColorUtility.ToHtmlStringRGB(suitPrimaryColor.shape.color), true);
+            profile.SetData("HOOD", ColorUtility.ToHtmlStringRGB(suitSecondaryColor.shape.color), true);
+            profile.SetData("LENS", ColorUtility.ToHtmlStringRGB(lensColor.shape.color), true);
+            profile.SetData("TANK", ColorUtility.ToHtmlStringRGB(tankColor.shape.color), true);
+            profile.SetData("SECONDARY", ColorUtility.ToHtmlStringRGB(patternColor.shape.color), true);
+            profile.SetData("PAINTCOLOR", ColorUtility.ToHtmlStringRGB(paintColor.shape.color),true);
             //Switch
-            ProfileKit.SetData(ourProfile, "PATTERN", patternOption.data);
-            ProfileKit.SetData(ourProfile, "PAINT", paintOption.data);
-            ProfileKit.SetData(ourProfile, "MODEL", modelPicker.selected);
-            ProfileKit.ClearData(ourProfile, "OUTFIT");
-            SavedProfileHelper.UpdateConfig(ourProfile);
-            if (!useOutfit.isOn || (!initialized && !SavedProfileHelper.UseOutfits))
+            profile.SetData("PATTERN", patternOption.data);
+            profile.SetData("PAINT", paintOption.data);
+            profile.SetData("MODEL", modelPicker.selected);
+            SavedProfileHelper.UpdateConfig(profile);
+            if (useOutfit.isOn || (!initialized && !SavedProfileHelper.UseOutfits))
             {
                 SavedProfileHelper.UseOutfits = true;
+                profile.SetData("OUTFIT", "TRUE");
             }
             else
             {
                 SavedProfileHelper.UseOutfits = false;
+                profile.SetData("OUTFIT", "FALSE");
             }
         }
     }

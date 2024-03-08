@@ -2,17 +2,17 @@
 using GameNetcodeStuff;
 using HarmonyLib;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace CackleCrew.ThisIsMagical
 {
     static class SyncManager
     {
-        public static string SerializationTag = "[cacklecrew]";
+        public const string CACKLECREW_TAG = "[CA]";
         public static void SyncPlayerConfig(PlayerControllerB controller)
         {
-            if (StartOfRound.Instance.localPlayerController.OwnerClientId == controller.OwnerClientId)
+            if (ProfileHelper.IsLocalPlayer(controller.OwnerClientId))
             {
-
                 SuitKit.SwitchSuitOfPlayer(controller, controller.currentSuitID);
                 SendPlayerConfig(controller);
             }
@@ -21,64 +21,52 @@ namespace CackleCrew.ThisIsMagical
         {
             List<string> tokens = new List<string>();
             ulong ourID = controller.OwnerClientId;
-            string ourProfile = $"{ourID}:Config";
-            if (!ProfileKit.TryGetProfile(ourProfile, out _))
-            {
-                ProfileKit.CloneProfile("DEFAULT:Config", ourProfile);
-            }
-            //Temp Fix Here//
+            string ourProfile = ProfileHelper.GetProfileName(ourID);
+            var profile = ProfileHelper.TouchPlayerProfile(ourProfile);
             SavedProfileHelper.UpdatePlayerProfile(ourProfile);
-            string ourModelName = ProfileKit.GetData(ourProfile, "MODEL");
-            tokens.Add(SerializationTag);
             tokens.Add(ourID.ToString());
-            ProfileKit.TryGetData(ourProfile, "OUTFIT", out var outfit);
-            if (!string.IsNullOrWhiteSpace(outfit) && outfit == "TRUE")
-            {
-                tokens.Add("CUSTOM");
-                var profile = ProfileKit.GetProfile(ourProfile);
-                foreach (var entry in profile)
-                {
-                    string tokenPair = $"{entry.Key}:{entry.Value}";
-                    tokens.Add(tokenPair);
-                }
-            }
+            tokens.Add("=");
+            if (profile.GetData("OUTFIT") == "FALSE")
+                tokens.Add(profile.GetData("MODEL",true));
             else
-            {
-                tokens.Add(ourModelName);
-            }
-            SyncDataKit.SendChatData(tokens.ToArray());
+                tokens.Add(profile.Serialize());
+            SyncDataKit.SendChatData(string.Join(null, tokens), CACKLECREW_TAG);
         }
-        public static void ReceivePlayerConfig(string[] tokens)
+        public static void ReceivePlayerConfig(string chatData)
         {
-            if (tokens.Length < 3)
-                return;
-            if (!ulong.TryParse(tokens[1], out var clientID))
-                return;
-            if (StartOfRound.Instance.localPlayerController.OwnerClientId == clientID)
-                return;
-            if (!StartOfRound.Instance.ClientPlayerList.TryGetValue(clientID, out var playerID))
-                return;
-            PlayerControllerB controller = StartOfRound.Instance.allPlayerObjects[playerID].GetComponent<PlayerControllerB>();
-            string ourProfile = $"{clientID}:Config";
-            if (!ProfileKit.TryGetProfile(ourProfile, out _))
+            int seperator_index = chatData.IndexOf('=');
+            if (seperator_index == -1)
             {
-                ProfileKit.CloneProfile("DEFAULT:Config", ourProfile);
+                Debug.LogWarning("Chat Data Received is Wrong...!");
+                Debug.LogWarning("Ignoring Chat Data...");
+                return;
             }
-            if (tokens[2] == "CUSTOM")
+            if (!ulong.TryParse(chatData.Substring(0, seperator_index), out ulong ownerClientID))
             {
-                for (int i = 3; i < tokens.Length; i++)
-                {
-                    var pair = tokens[i].Split(':');
-                    ProfileKit.SetData(ourProfile, pair[0], pair[1]);
-                }
+                Debug.LogWarning("Unable to Parge ID from chat data...!");
+                return;
+            }
+            if (ProfileHelper.IsLocalPlayer(ownerClientID))
+            {
+                //Debug.LogWarning("Config Is Local, Ignoring...");
+                return;
+            }
+            Profile profile = ProfileHelper.TouchPlayerProfile(ownerClientID, out var player);
+            if (profile == null)
+            {
+                Debug.LogWarning("Config Profile Does not exist!");
+                return;
+            }
+            var data = chatData.Substring(++seperator_index);
+            if (data.Length == 1)
+            {
+                profile.SetData("OUTFIT", "FALSE");
+                profile.SetData("MODEL", data, true);
             }
             else
-            {
-                ProfileKit.SetData(ourProfile, "MODEL", tokens[2]);
-                ProfileKit.ClearData(ourProfile, "OUTFIT");
-            }
-            SuitKit.SwitchSuitOfPlayer(controller, controller.currentSuitID);
-            ModelReplacement.ModelReplacementAPI.ResetPlayerModelReplacement(controller);
+                profile.Deserialize(data);
+            SuitKit.SwitchSuitOfPlayer(player, player.currentSuitID);
+            ModelReplacement.ModelReplacementAPI.ResetPlayerModelReplacement(player);
         }
     }
     [HarmonyPatch]
@@ -88,35 +76,36 @@ namespace CackleCrew.ThisIsMagical
         [HarmonyPostfix]
         private static void ConnectClientToPlayerObject_Postfix(PlayerControllerB __instance)
         {
+            ModelReplacement.ModelReplacementAPI.ResetPlayerModelReplacement(__instance);
             SyncManager.SyncPlayerConfig(__instance);
         }
         [HarmonyPatch(typeof(StartOfRound), "SyncShipUnlockablesClientRpc")]
         [HarmonyPostfix]
         private static void SyncShipUnlockablesClientRpc_Postfix(StartOfRound __instance)
         {
-            if (__instance.IsServer)
+            if (ProfileHelper.IsServerHost() || !ProfileHelper.TryGetLocalPlayer(out var controller))
                 return;
-            var controller = StartOfRound.Instance.localPlayerController;
             SyncManager.SyncPlayerConfig(controller);
         }
         [HarmonyPatch(typeof(StartOfRound), "SyncShipUnlockablesServerRpc")]
         [HarmonyPostfix]
         private static void SyncShipUnlockablesServerRpc_Postfix(StartOfRound __instance)
         {
-            var controller = StartOfRound.Instance.localPlayerController;
+            if (!ProfileHelper.TryGetLocalPlayer(out var controller))
+                return;
             SyncManager.SyncPlayerConfig(controller);
         }
         [HarmonyPatch(typeof(StartOfRound), "Start")]
         [HarmonyPostfix]
         public static void Start_Postfix(ref StartOfRound __instance)
         {
-            SyncDataKit.AttachListener(SyncManager.SerializationTag, SyncManager.ReceivePlayerConfig);
+            SyncDataKit.AttachListener(SyncManager.CACKLECREW_TAG, SyncManager.ReceivePlayerConfig);
         }
         [HarmonyPatch(typeof(StartOfRound), "OnDestroy")]
         [HarmonyPostfix]
         public static void OnDestroy_Postfix(ref StartOfRound __instance)
         {
-            SyncDataKit.RemoveListener(SyncManager.SerializationTag);
+            SyncDataKit.RemoveListener(SyncManager.CACKLECREW_TAG, SyncManager.ReceivePlayerConfig);
         }
     }
 }

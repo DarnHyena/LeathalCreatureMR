@@ -1,10 +1,13 @@
-﻿using CackleCrew.ThisIsMagical;
+﻿using System.Text.RegularExpressions;
+using CackleCrew.ThisIsMagical;
 using UnityEngine;
 using UnityEngine.UI;
 namespace CackleCrew.UI
 {
     class ClipboardUIHandler : MonoBehaviour
     {
+        public const string CLIPBOARD_PROFILE_PREFIX = "CAv1";
+        public const string CLIPBOARD_PROFILE_PATTERN = @"^CAv1[a-zA-Z][A-C][01][\dA-F]{36}[0-4]{2}$";
         public CackleCrewUIHandler handler;
         public Button pasteButton;
         public Button copyButton;
@@ -15,33 +18,40 @@ namespace CackleCrew.UI
             pasteButton.onClick.AddListener(PasteProfileFromClipboard);
             copyButton.onClick.AddListener(CopyProfileToClipboard);
         }
-
         void PasteProfileFromClipboard()
         {
             string clipboard = FromClipboard();
-            var controller = StartOfRound.Instance.localPlayerController;
-            string ourProfile = $"{controller.OwnerClientId}:Config";
-            if (!ProfileKit.TryGetProfile(ourProfile, out _))
-            {
-                ProfileKit.CloneProfile("DEFAULT:Config", ourProfile);
-            }
-            ProfileKit.DeSerializeProfile_Tokens(ourProfile,clipboard);
+            bool isOldProfileData = CompatibilityKit.IsOldProfileData(clipboard);
+            var profile = ProfileHelper.TouchLocalPlayerProfile(out var player);
+            if (profile == null) return;
+            if (!ValidateProfileData(clipboard, out var profileData) && !isOldProfileData) return;
+            if (isOldProfileData)
+                CompatibilityKit.Deserialize_OldProfileData(profile, clipboard);
+            else
+                profile.Deserialize(profileData);
             handler.UpdateProfileOptions();
         }
         void CopyProfileToClipboard()
         {
-            var controller = StartOfRound.Instance.localPlayerController;
-            string ourProfile = $"{controller.OwnerClientId}:Config";
-            ProfileHelper.TouchPlayerProfile(ourProfile);
+            var profile = ProfileHelper.TouchLocalPlayerProfile(out var player);
+            if (profile == null) return;
             handler.ApplyProfileOptions();
-            string clipboard = ProfileKit.SerializeProfile_Tokens(ourProfile);
-            ToClipboard(clipboard);
+            string clipboard = profile.Serialize();
+            ToClipboard(CLIPBOARD_PROFILE_PREFIX + clipboard);
+        }
+        bool ValidateProfileData(string input, out string profileData)
+        {
+            profileData = null;
+            input = input.Trim();
+            if (!Regex.IsMatch(input, CLIPBOARD_PROFILE_PATTERN))
+                return false;
+            profileData = input.Substring(CLIPBOARD_PROFILE_PREFIX.Length);
+            return true;
         }
         string FromClipboard()
         {
             return GUIUtility.systemCopyBuffer;
         }
-
         void ToClipboard(string text)
         {
             GUIUtility.systemCopyBuffer = text;

@@ -94,15 +94,42 @@ namespace CackleCrew.ThisIsMagical
 
         public static void SwitchSuitOfPlayer(PlayerControllerB controller, int suitID)
         {
-            if (!StartOfRound.Instance.SpawnedShipUnlockables.TryGetValue(suitID, out var suitObj))
+            if (suitID >= 0 && StartOfRound.Instance.unlockablesList.unlockables.Count - 1 >= suitID)
             {
-                Debug.LogWarning($"SUIT ID : {suitID} DOES NOT EXIST!!! Is it not registered with the Unlockables?!");
-                Debug.LogWarning($"Suits need to be registered to utilize the built in client RPC functionality.");
-                return;
+                UnlockableSuit.SwitchSuitForPlayer(controller, suitID, false);
             }
-            var suit = suitObj.GetComponent<UnlockableSuit>();
-            UnlockableSuit.SwitchSuitForPlayer(controller, suitID, false);
-            suit.SwitchSuitServerRpc((int)controller.OwnerClientId);
+            else
+            {
+                Debug.LogWarning($"Suit ID {suitID} is not valid.");
+            }
+            UnlockableSuit suit = null;
+            foreach (var unlockable in StartOfRound.Instance.SpawnedShipUnlockables)
+            {
+                if (unlockable.Key == suitID)
+                {
+                    suit = unlockable.Value.GetComponent<UnlockableSuit>();
+                    break;
+                }
+            }
+            if (suit == null)
+            {
+                foreach (var unlockableSuit in GameObject.FindObjectsOfType<UnlockableSuit>())
+                {
+                    if (unlockableSuit.suitID == suitID)
+                    {
+                        suit = unlockableSuit;
+                        break;
+                    }
+                }
+            }
+            if (suit != null)
+            {
+                suit.SwitchSuitServerRpc((int)controller.OwnerClientId);
+            }
+            else
+            {
+                Debug.LogWarning($"Could Not Find UnlockableSuit!");
+            }
         }
         public static void SampleSuitColors(Texture2D suitTexture, out Color bootColor, out Color suitColor, out Color clothColor, out Color tankColor)
         {

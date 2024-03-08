@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace CackleCrew.ThisIsMagical
 {
+    //TODO read MaterialKit's TODO
     public static class ModelKit
     {
         public static Dictionary<string, GameObject> registeredModels = new Dictionary<string, GameObject>();

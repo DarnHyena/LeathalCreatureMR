@@ -3,7 +3,9 @@ using UnityEngine;
 
 namespace CackleCrew.ThisIsMagical
 {
-    //PixelStuff
+    //Utility functions specifically for manipulating pixels in a texture!
+    //Used to be alot more complicated with automatic-layering, I will revisit this.
+    //Possibly utilizing GPU optimized methods...!
     public static partial class PixelKit
     {
         public static void HSV(ref Color original, float H, float S, float V)
@@ -177,7 +179,6 @@ namespace CackleCrew.ThisIsMagical
             }
         }
     }
-
     //PixelStuff
     public static partial class PixelKit
     {

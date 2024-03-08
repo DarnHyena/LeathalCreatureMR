@@ -12,45 +12,28 @@ namespace CackleCrew.Helpers
         {
             //Profile Stuff
             ulong ourID = controller.OwnerClientId;
-            string ourProfile = $"{ourID}:Config";
-            bool isNewProfile = !ProfileKit.TryGetProfile(ourProfile, out _);
-            ProfileHelper.TouchPlayerProfile(ourProfile);
-            //Old Method here <-->
-            //StartOfRound.Instance.localPlayerController.OwnerClientId == ourID)
-            if (isNewProfile && StartOfRound.Instance.OwnerClientId == ourID)
+            string ourProfile = ProfileHelper.GetProfileName(ourID);
+            bool isNewProfile = !Profile.HasProfile(ourProfile);
+            Profile profile = ProfileHelper.TouchPlayerProfile(ourProfile);
+            if (isNewProfile && ProfileHelper.IsLocalPlayer(ourID))
             {
                 SavedProfileHelper.UpdatePlayerProfile(ourProfile);
                 if (SavedProfileHelper.UseOutfits)
                 {
-                    ProfileKit.SetData(ourProfile, "OUTFIT", "TRUE");
+                    profile.SetData("OUTFIT", "TRUE");
                 }
             }
-            string ourModelName = ProfileKit.GetData(ourProfile, "MODEL");
-            if (string.IsNullOrWhiteSpace(ourModelName))
-            {
-                //Default Model Stuff...!
-                ProfileKit.SetData(ourProfile, "MODEL", ModelKit.GetDefaultModel());
-            }
+            string ourModelName = profile.GetData("MODEL");
             //Suit Compatibility
             int suitID = SuitKit.GetCurrentSuitID(controller);
             string suitName = SuitKit.GetSuitName(suitID);
-            if (ModelKit.HasModel(suitName))
-            {
-                ProfileKit.SetData(ourProfile, "MODEL", suitName);
-                UnlockableSuit.SwitchSuitForPlayer(controller, SuitKit.GetLastSuitID(controller), false);
-                SyncManager.SyncPlayerConfig(controller);
-                suitName = SuitKit.GetLastSuitName(controller);
-            }
+            //Removed Suit-Model Switching, No Longer Needed..!
             //Model
             GameObject ourModel = ModelKit.GetModel(ourModelName);
             //Materials
             SkinnedMeshRenderer[] renderers = ourModel.GetComponentsInChildren<SkinnedMeshRenderer>();
-            ProfileKit.TryGetData(ourProfile, "OUTFIT", out var outfit);
-            string outfitProfile = suitName;
-            if (!string.IsNullOrWhiteSpace(outfit) && outfit == "TRUE")
-            {
-                outfitProfile = ourProfile;
-            }
+            bool using_outfits = profile.GetData("OUTFIT").ToUpper() == "TRUE" ? true : false;
+            string outfitProfile = (using_outfits) ? ourProfile : $"{ourModelName}:{suitName}";
             if (!MaterialKit.TryGetMaterial($"{ourModelName}:{outfitProfile}", out var material))
             {
                 material = new Material(renderers[0].material);
@@ -64,78 +47,45 @@ namespace CackleCrew.Helpers
         }
         public static void ApplyProfileToMaterial(ref Material material, string profileName)
         {
-            Touch_OutfitProfile(profileName);
-            MaterialPropertyBlock properties = new MaterialPropertyBlock();
-            material.SetColor("_SuitColor", GetColorFromSet(profileName, "PRIMARY"));
-            material.SetColor("_PatternColor", GetColorFromSet(profileName, "SECONDARY"));
-            material.SetColor("_HoodColor", GetColorFromSet(profileName, "HOOD"));
-            material.SetColor("_TankColor", GetColorFromSet(profileName, "TANK"));
-            material.SetColor("_LensColor", GetColorFromSet(profileName, "LENS"));
-            material.SetColor("_PaintColor", GetColorFromSet(profileName, "PAINTCOLOR"));
-            ClearKeywords(ref material, "PATTERN");
-            var pattern = GetConfigFromProfile(profileName, "PATTERN");
-            SetKeyword(ref material, "PATTERN", pattern);
-            ClearKeywords(ref material, "PAINT");
-            var paint = GetConfigFromProfile(profileName, "PAINT");
-            SetKeyword(ref material, "PAINT", paint);
+            var profile = Touch_OutfitProfile(profileName);
+            material.SetColor("_SuitColor", GetColorFromProfile(profile, "PRIMARY"));
+            material.SetColor("_PatternColor", GetColorFromProfile(profile, "SECONDARY"));
+            material.SetColor("_HoodColor", GetColorFromProfile(profile, "HOOD"));
+            material.SetColor("_TankColor", GetColorFromProfile(profile, "TANK"));
+            material.SetColor("_LensColor", GetColorFromProfile(profile, "LENS"));
+            material.SetColor("_PaintColor", GetColorFromProfile(profile, "PAINTCOLOR"));
+            ApplyConfigFromProfile(ref material, profile, "PATTERN");
+            ApplyConfigFromProfile(ref material, profile, "PAINT");
         }
-        public static void ClearKeywords(ref Material material, string keyword)
+        public static Color GetColorFromProfile(Profile profile, string name)
         {
-            foreach (var enabledKeyword in material.enabledKeywords)
-            {
-                if (enabledKeyword.name.Contains(keyword))
-                    material.DisableKeyword(enabledKeyword.name);
-            }
+            var foundColor = (profile != null) ? profile.GetData(name) : string.Empty;
+            if (!ColorUtility.TryParseHtmlString(foundColor, out Color color))
+                color = Color.white;
+            return color;
         }
-        public static void SetKeyword(ref Material material, string keyword, string option)
+        public static void ApplyConfigFromProfile(ref Material material, Profile profile, string name)
         {
-            material.EnableKeyword($"_{keyword}_{option}");
-        }
-        public static string GetConfigFromProfile(string profileName, string name)
-        {
-            if (ProfileKit.TryGetData(profileName, name, out var data))
-            {
-                return data;
-            }
-            else
-            {
-                return ProfileKit.GetData("DEFAULT:Config", name);
-            }
-        }
-        public static Color GetColorFromSet(string profileName, params string[] names)
-        {
-            foreach (var colorname in names)
-            {
-                if (GetColorFromProfile(profileName, colorname, out Color color))
-                {
-                    return color;
-                }
-            }
-            return Color.white;
-        }
-        public static bool GetColorFromProfile(string profileName, string name, out Color color)
-        {
-            var foundColor = GetConfigFromProfile(profileName, name);
-            if (ColorUtility.TryParseHtmlString(foundColor, out Color parsedColor))
-            {
-                color = parsedColor;
-                return true;
-            }
-            color = Color.white;
-            return false;
+            ShaderKit.ClearKeywords(ref material, name);
+            var paint = (profile != null) ? profile.GetData(name) : "None";
+            ShaderKit.SetKeyword(ref material, name, paint);
         }
         //Checks if the profile exists, otherwise create one using color data.
-        public static void Touch_OutfitProfile(string outfitName)
+        public static Profile Touch_OutfitProfile(string profileName)
         {
-            if (ProfileKit.TryGetProfile(outfitName, out _))
-                return;
-            int suitID = SuitKit.GetSuitID(outfitName);
+            if (Profile.TryGetProfile(profileName, out var profile))
+                return profile;
+            var suitName = profileName;
+            if (profileName.Contains(':'))
+                suitName = profileName.Substring(profileName.IndexOf(':') + 1);
+            int suitID = SuitKit.GetSuitID(suitName);
             Texture2D suitTexture = SuitKit.GetSuitMaterial(suitID).mainTexture as Texture2D;
             SuitKit.SampleSuitColors(suitTexture, out var bootColor, out var suitColor, out var clothColor, out var tankColor);
-            ProfileKit.CloneProfile("DEFAULT:Config", outfitName);
-            ProfileKit.SetData(outfitName, "PRIMARY", $"#{ColorUtility.ToHtmlStringRGB(suitColor)}");
-            ProfileKit.SetData(outfitName, "HOOD", $"#{ColorUtility.ToHtmlStringRGB(clothColor)}");
-            ProfileKit.SetData(outfitName, "TANK", $"#{ColorUtility.ToHtmlStringRGB(tankColor)}");
+            profile = Profile.CloneProfile(profileName, ProfileHelper.DefaultProfile);
+            profile.SetData("PRIMARY", ColorUtility.ToHtmlStringRGB(suitColor), true);
+            profile.SetData("HOOD", ColorUtility.ToHtmlStringRGB(clothColor), true);
+            profile.SetData("TANK", ColorUtility.ToHtmlStringRGB(tankColor), true);
+            return profile;
         }
     }
 }

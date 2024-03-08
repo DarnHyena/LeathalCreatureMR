@@ -30,6 +30,9 @@ namespace CackleCrewMR.Helpers
             CreateProfileConfig("B");
             CreateProfileConfig("C");
             CreateProfileConfig("D");
+            //Eventually might force old-profile save data to be converted.
+            //For now I'll implement a temperary check to attempt to load old data instead of overriding it.
+            //CompatibilityKit.ValidateSavedProfiles();
         }
         public static void CreateDefaultProfileConfig()
         {
@@ -43,23 +46,28 @@ namespace CackleCrewMR.Helpers
             savedConfigs.Add(configName, config);
             return config;
         }
-        public static void UpdatePlayerProfile(string profileName)
+        public static void UpdatePlayerProfile(Profile profile)
         {
-            ProfileHelper.TouchPlayerProfile(profileName);
-            ProfileKit.DeSerializeProfile_Tokens(profileName, currentConfig.Value);
+            if(CompatibilityKit.IsOldProfileData(currentConfig.Value))
+                CompatibilityKit.Deserialize_OldProfileData(profile, currentConfig.Value);
+            else
+                profile.Deserialize(currentConfig.Value);
             if (UseOutfits)
             {
-                ProfileKit.SetData(profileName, "OUTFIT", "TRUE");
+                profile.SetData("OUTFIT", "TRUE");
             }
             else
             {
-                ProfileKit.ClearData(profileName, "OUTFIT");
+                profile.SetData("OUTFIT", "FALSE");
             }
         }
-        public static void UpdateConfig(string profileName)
+        public static void UpdatePlayerProfile(string profileName)
         {
-            ProfileHelper.TouchPlayerProfile(profileName);
-            var profileData = ProfileKit.SerializeProfile_Tokens(profileName);
+            UpdatePlayerProfile(ProfileHelper.TouchPlayerProfile(profileName));
+        }
+        public static void UpdateConfig(Profile profile)
+        {
+            var profileData = profile.Serialize();
             if (string.IsNullOrWhiteSpace(profileData))
             {
                 currentConfig.Value = "None";
@@ -68,6 +76,10 @@ namespace CackleCrewMR.Helpers
             {
                 currentConfig.Value = profileData;
             }
+        }
+        public static void UpdateConfig(string profileName)
+        {
+            UpdateConfig(ProfileHelper.TouchPlayerProfile(profileName));
         }
         public static void SaveConfig(string configName)
         {

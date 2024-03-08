@@ -19,74 +19,79 @@ namespace CackleCrew.ThisIsMagical
         public static void RegisterAssets()
         {
             RegisterVanillaModels();
+            RegisterSuitMaterials();
             RegisterMoreSuitsMaterials();
-            RegisterVanillaMaterials();
         }
-        public static void RegisterVanillaMaterials()
+        public static void RegisterSuitMaterials()
         {
-            //RegisterSuitProfile("SUIT", "#PRIMARY", "#SECONDARY", "#TANK", "#LENS", "#PATTERNCOLOR", "#PAINTCOLOR", "PAINT SET", "PATTERN SET");
-            RegisterSuitProfile("Default", "#843b08", "#9e6944", "#FF9B31", "#1DD44D", "#b77a54", "#E0BB9F", "A", "None");
-            RegisterSuitProfile("Orange suit", "#843b08", "#9e6944", "#FF9B31", "#1DD44D", "#b77a54", "#E0BB9F", "A", "None");
-            RegisterSuitProfile("Green suit", "#4f4b00", "#ae7b54", "#D67825", "#FFD6C6", "#656312", "#B9835A", "A", "B");
-            RegisterSuitProfile("Hazard suit", "#f3b156", "#af6324", "#B74A38", "#FF4400", "#8e421d", "#4F3427", "C", "C");
-            RegisterSuitProfile("Pajama suit", "#4b5a3b", "#a57751", "#F56C0F", "#FD9E2C", "#a37a56", "#7D5435", "A", "A");
-            RegisterSuitProfile("Purple Suit", "#652352", "#652352", "#CF8224", "#FF9C00", "#995945", "#BF8B64", "B", "D");
+            //Creature
+            RegisterProfileData("A:Default", "vA1A93C14C38F68FF8E001DD44DFDD9C9E0BB9F10");
+            RegisterProfileData("A:Orange suit", "vA1A93C14C38F68FF8E001DD44DFDD9C9E0BB9F10");
+            RegisterProfileData("A:Green suit", "SA1687600F1DCC7D67825FFD6C69A952CB9835A12");
+            RegisterProfileData("A:Hazard suit", "YA1E2913DE2913DC35220FF4400B24E1C4F342733");
+            RegisterProfileData("A:Pajama suit", "YA164937DE0C3A6F56C0FFF7D01E0C3A6ECA87511");
+            RegisterProfileData("A:Purple Suit", "lA1733B90733B90CF7A24FF9C00A15F3CBE866442");
+            //Navigator
+            RegisterProfileData("B:Default", "rB19A421FCC8E269A948F6DC57DCC9882B2836613");
+            RegisterProfileData("B:Orange suit", "rB19A421FCC8E269A948F6DC57DCC9882B2836613");
+            RegisterProfileData("B:Green suit", "QB171730E623F13C3930DF8CA89E3A931B2836612");
+            RegisterProfileData("B:Hazard suit", "jB1DB8205BE3C11E9B283EC310A9C1A0767350F33");
+            RegisterProfileData("B:Pajama suit", "nB1578A73B28366C86025FF8414B99B71B2836611");
+            RegisterProfileData("B:Purple Suit", "rB17E43B4CC8E26935B83FFA0009C5B3FB2836624");
+            //Brawler
+            RegisterProfileData("C:Default", "rC1A44810C36E10FF9D0441CF55D4BA9FE0BB9F11");
+            RegisterProfileData("C:Orange suit", "rC1A44810C36E10FF9D0441CF55D4BA9FE0BB9F11");
+            RegisterProfileData("C:Green suit", "zC167781DE27E0CBC3026F1C689D4BA9FE0BB9F10");
+            RegisterProfileData("C:Hazard suit", "MC1D17919873BECE02E00E02E0072381F542F1532");
+            RegisterProfileData("C:Pajama suit", "SC15C9F69FF9E00FF5F04FF5F04DEEE98E0BB9F13");
+            RegisterProfileData("C:Purple Suit", "QC17243B9FF8600C9B9A1D42A1BC5884DE0BB9F44");
         }
         public static void RegisterMoreSuitsMaterials()
         {
-            RegisterSuitProfile("CARed", "#843b08", "#9e6944", "#FF9B31", "#1DD44D", "#b77a54", "#E0BB9F", "A", "None");
-            RegisterSuitProfile("CAGreen", "#4f4b00", "#ae7b54", "#D67825", "#FFD6C6", "#656312", "#B9835A", "A", "B");
-            RegisterSuitProfile("CAHaz", "#f3b156", "#af6324", "#B74A38", "#FF4400", "#8e421d", "#4F3427", "C", "C");
-            RegisterSuitProfile("CAPajam", "#4b5a3b", "#a57751", "#F56C0F", "#FD9E2C", "#a37a56", "#7D5435", "A", "A");
-            RegisterSuitProfile("CAPurple", "#652352", "#652352", "#CF8224", "#FF9C00", "#995945", "#BF8B64", "B", "D");
+            //Creature
+            Profile.CloneProfile("A:CARed", "A:Default");
+            Profile.CloneProfile("A:CAGreen", "A:Green suit");
+            Profile.CloneProfile("A:CAHaz", "A:Hazard suit");
+            Profile.CloneProfile("A:CAPajam", "A:Pajama suit");
+            Profile.CloneProfile("A:CAPurple", "A:Purple Suit");
+            //Navigator
+            Profile.CloneProfile("B:CARed", "B:Default");
+            Profile.CloneProfile("B:CAGreen", "B:Green suit");
+            Profile.CloneProfile("B:CAHaz", "B:Hazard suit");
+            Profile.CloneProfile("B:CAPajam", "B:Pajama suit");
+            Profile.CloneProfile("B:CAPurple", "B:Purple Suit");
+            //Brawler
+            Profile.CloneProfile("C:CARed", "C:Default");
+            Profile.CloneProfile("C:CAGreen", "C:Green suit");
+            Profile.CloneProfile("C:CAHaz", "C:Hazard suit");
+            Profile.CloneProfile("C:CAPajam", "C:Pajama suit");
+            Profile.CloneProfile("C:CAPurple", "C:Purple Suit");
         }
         public static void RegisterVanillaModels()
         {
-            ModelKit.RegisterModel("Grunt", Assets.MainAssetBundle.LoadAsset<GameObject>("CreatureA"));
-            ModelKit.RegisterModel("Comms", Assets.MainAssetBundle.LoadAsset<GameObject>("CreatureB"));
-            ModelKit.RegisterModel("Sentry", Assets.MainAssetBundle.LoadAsset<GameObject>("CreatureC"));
+            ModelKit.RegisterModel("A", Assets.MainAssetBundle.LoadAsset<GameObject>("CreatureA"));
+            ModelKit.RegisterModel("B", Assets.MainAssetBundle.LoadAsset<GameObject>("CreatureB"));
+            ModelKit.RegisterModel("C", Assets.MainAssetBundle.LoadAsset<GameObject>("CreatureC"));
         }
-        public static void RegisterSuitProfile(string suitName, string primary, string secondary, string tank, string lens, string patterncolor, string paintcolor, string paint, string pattern)
+        public static void RegisterProfileData(string profileName, string profileData)
         {
-            ProfileKit.CloneProfile("DEFAULT:Config", suitName);
-            if (ColorUtility.TryParseHtmlString(primary, out var _))
-            {
-                ProfileKit.SetData(suitName, "PRIMARY", primary); //Suit Color
-            }
-            if (ColorUtility.TryParseHtmlString(secondary, out var _))
-            {
-                ProfileKit.SetData(suitName, "HOOD", secondary); //Secondary Color [Hood,Flowers,Sash]
-            }
-            if (ColorUtility.TryParseHtmlString(tank, out var _))
-            {
-                ProfileKit.SetData(suitName, "TANK", tank); //Tank Color
-            }
-            if (ColorUtility.TryParseHtmlString(lens, out var _))
-            {
-                ProfileKit.SetData(suitName, "LENS", lens); //Lens Color
-            }
-            if (ColorUtility.TryParseHtmlString(patterncolor, out var _))
-            {
-                ProfileKit.SetData(suitName, "SECONDARY", patterncolor); //Pattern Color
-            }
-            if (ColorUtility.TryParseHtmlString(paintcolor, out var _))
-            {
-                ProfileKit.SetData(suitName, "PAINTCOLOR", paintcolor); //Paint Color
-            }
-            ProfileKit.SetData(suitName, "PAINT", paint); //Paint Set
-            ProfileKit.SetData(suitName, "PATTERN", pattern); //Pattern Set
+            var profile = ProfileHelper.TouchPlayerProfile(profileName);
+            profile.Deserialize(profileData);
+            profile.SetData("OUTFIT","FALSE");
         }
         public static void SetDefaultProfile()
         {
-            var defaultProfile = $"DEFAULT:Config";
-            ProfileKit.SetData(defaultProfile, "PRIMARY", "#B76912");
-            ProfileKit.SetData(defaultProfile, "HOOD", "#DBBCA2");
-            ProfileKit.SetData(defaultProfile, "TANK", "#FF9B31");
-            ProfileKit.SetData(defaultProfile, "LENS", "#1DD44D");
-            ProfileKit.SetData(defaultProfile, "SECONDARY", "#FDD9C9");
-            ProfileKit.SetData(defaultProfile, "PAINTCOLOR", "#E0BB9F");
-            ProfileKit.SetData(defaultProfile, "PAINT", "A");
-            ProfileKit.SetData(defaultProfile, "PATTERN", "NONE");
+            var profile = Profile.CreateProfile(ProfileHelper.DefaultProfile);
+            profile.SetData("MODEL", "A", false, ProfileDataType.Character);
+            profile.SetData("OUTFIT", "FALSE", false, ProfileDataType.Boolean);
+            profile.SetData("PRIMARY", "#A93C14", false, ProfileDataType.Color);
+            profile.SetData("HOOD", "#C38F68", false, ProfileDataType.Color);
+            profile.SetData("TANK", "#FF8E00", false, ProfileDataType.Color);
+            profile.SetData("LENS", "#1DD44D", false, ProfileDataType.Color);
+            profile.SetData("SECONDARY", "#FDD9C9", false, ProfileDataType.Color);
+            profile.SetData("PAINTCOLOR", "#E0BB9F", false, ProfileDataType.Color);
+            profile.SetData("PAINT", "A", false, ProfileDataType.ShaderOption);
+            profile.SetData("PATTERN", "NONE", false, ProfileDataType.ShaderOption);
         }
     }
     [HarmonyPatch]
@@ -96,7 +101,7 @@ namespace CackleCrew.ThisIsMagical
         [HarmonyPostfix]
         public static void OnDestroy_Postfix(ref StartOfRound __instance)
         {
-            ProfileKit.ClearAllProfilesFiltered(":Config", "DEFAULT");
+            Profile.FilterDeleteProfiles(new string[] { ProfileHelper.DEFAULT_PROFILE_ID }, new string[] { ProfileHelper.PROFILE_POSTFIX });
             MaterialKit.ClearMaterials();
         }
     }
