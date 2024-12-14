@@ -5,6 +5,7 @@ using System.Reflection;
 using ModelReplacement;
 using BepInEx.Configuration;
 using CackleCrew.ThisIsMagical;
+using CackleCrewMR;
 
 //using System.Numerics;
 
@@ -18,42 +19,33 @@ namespace CreatureModelReplacement
 
     public class Plugin : BaseUnityPlugin
     {
-        public static ConfigFile config;
+        internal static PluginConfiguration Configuration { get; private set; }
 
-        // Universal config options  
-        public static ConfigEntry<bool> enableModelForAllSuits { get; private set; }
-        public static ConfigEntry<bool> enableModelAsDefault { get; private set; }
-        public static ConfigEntry<string> suitNamesToEnableModel { get; private set; }
-
-
-        private static void InitConfig()
+        private static void InitConfig(ConfigFile file)
         {
-            enableModelForAllSuits = config.Bind<bool>("Suits to Replace Settings", "Enable Model for all Suits", false, "Enable to replace every suit with Model. Set to false to specify suits");
-            enableModelAsDefault = config.Bind<bool>("Suits to Replace Settings", "Enable Model as default", false, "Enable to replace every suit that hasn't been otherwise registered with Model.");
-            suitNamesToEnableModel = config.Bind<string>("Suits to Replace Settings", "Suits to enable Model for", "Default,Orange suit,Green suit,Pajama suit,Hazard suit,Purple Suit", "For use with Moresuits, replace list with: CARed,CAGreen,CAHaz,CAPajam,CAPurp");
-
+            Configuration = new PluginConfiguration(file);
         }
+
         private void Awake()
         {
-            config = base.Config;
-            InitConfig();
+            InitConfig(Config);
             Assets.PopulateAssets();
 
             // Plugin startup logic
 
-            if (enableModelForAllSuits.Value)
+            if (Configuration.EnableModelForAllSuits)
             {
                 ModelReplacementAPI.RegisterModelReplacementOverride(typeof(BodyReplacement));
 
             }
 
-            if (enableModelAsDefault.Value)
+            if (Configuration.EnableModelAsDefault)
             {
                 ModelReplacementAPI.RegisterModelReplacementDefault(typeof(BodyReplacement));
 
             }
 
-            var commaSepList = suitNamesToEnableModel.Value.Split(',');
+            var commaSepList = Configuration.SuitNamesToEnableModel.Split(',');
             foreach (var item in commaSepList)
             {
                 ModelReplacementAPI.RegisterSuitModelReplacement(item, typeof(BodyReplacement));

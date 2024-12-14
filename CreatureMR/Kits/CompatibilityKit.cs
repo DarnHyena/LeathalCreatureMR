@@ -2,7 +2,9 @@
 using System;
 using System.IO.Compression;
 using System.IO;
+using System.Linq;
 using System.Text;
+using CackleCrewMR;
 using UnityEngine;
 using CackleCrewMR.Helpers;
 
@@ -36,18 +38,18 @@ namespace CackleCrew.ThisIsMagical
         public static void ValidateSavedProfiles()
         {   
             var tempProfile = Profile.CloneProfile("TEMP:PROFILE:IGNORE",ProfileHelper.DefaultProfile);
-            if(IsOldProfileData(SavedProfileHelper.currentConfig.Value))
+            if(IsOldProfileData(SavedProfileHelper.CurrentProfileData))
             {
-                Deserialize_OldProfileData(tempProfile, SavedProfileHelper.currentConfig.Value);
-                SavedProfileHelper.currentConfig.Value = tempProfile.Serialize();
+                Deserialize_OldProfileData(tempProfile, SavedProfileHelper.CurrentProfileData);
+                SavedProfileHelper.CurrentProfileData = tempProfile.Serialize();
             }
-            foreach(var pair in SavedProfileHelper.savedConfigs)
+            foreach(var profileName in Enum.GetValues(typeof(ProfileNames)).Cast<ProfileNames>())
             {
                 tempProfile = Profile.ReflectProfile("TEMP:PROFILE:IGNORE", ProfileHelper.DefaultProfile);
-                if (IsOldProfileData(pair.Value.Value))
+                if (IsOldProfileData(SavedProfileHelper.GetProfileData(profileName)))
                 {
-                    Deserialize_OldProfileData(tempProfile, pair.Value.Value);
-                    pair.Value.Value = tempProfile.Serialize();
+                    Deserialize_OldProfileData(tempProfile, SavedProfileHelper.GetProfileData(profileName));
+                    SavedProfileHelper.SaveProfileData(profileName, tempProfile.Serialize());
                 }
             }
             Profile.DeleteProfile("TEMP:PROFILE:IGNORE");

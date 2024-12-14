@@ -1,5 +1,6 @@
 ﻿using CackleCrew.ThisIsMagical;
 using CackleCrewMR.Helpers;
+using CreatureModelReplacement;
 using GameNetcodeStuff;
 using UnityEngine;
 
@@ -18,7 +19,7 @@ namespace CackleCrew.Helpers
             if (isNewProfile && ProfileHelper.IsLocalPlayer(ourID))
             {
                 SavedProfileHelper.UpdatePlayerProfile(ourProfile);
-                if (SavedProfileHelper.UseOutfits)
+                if (Plugin.Configuration.OutfitEnabled)
                 {
                     profile.SetData("OUTFIT", "TRUE");
                 }

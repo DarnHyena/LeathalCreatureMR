@@ -3,6 +3,7 @@ using CackleCrew.ThisIsMagical;
 using UnityEngine.UI;
 using UnityEngine.InputSystem.XR;
 using CackleCrewMR.Helpers;
+using CreatureModelReplacement;
 
 namespace CackleCrew.UI
 {
@@ -105,7 +106,7 @@ namespace CackleCrew.UI
             var profile = ProfileHelper.TouchLocalPlayerProfile(out var player);
             if (profile == null) return;
             ApplyProfileOptions();
-            SavedProfileHelper.UpdateConfig(profile);
+            SavedProfileHelper.UpdateCurrentConfig(profile);
             SavedProfileHelper.SaveConfig(profileSaves.currentOption);
         }
         public void LoadConfig()
@@ -129,7 +130,7 @@ namespace CackleCrew.UI
                 return;
             var profile = ProfileHelper.TouchLocalPlayerProfile(out var player);
             if (profile == null) return;
-            useOutfit.isOn = SavedProfileHelper.UseOutfits;
+            useOutfit.isOn = Plugin.Configuration.OutfitEnabled;
             ToggleCustomization(useOutfit.isOn);
             if (ColorUtility.TryParseHtmlString(profile.GetData("PRIMARY"), out var primaryColor))
                 this.suitPrimaryColor.SetColor(primaryColor);
@@ -163,15 +164,15 @@ namespace CackleCrew.UI
             profile.SetData("PATTERN", patternOption.data);
             profile.SetData("PAINT", paintOption.data);
             profile.SetData("MODEL", modelPicker.selected);
-            SavedProfileHelper.UpdateConfig(profile);
-            if (useOutfit.isOn || (!initialized && !SavedProfileHelper.UseOutfits))
+            SavedProfileHelper.UpdateCurrentConfig(profile);
+            if (useOutfit.isOn || (!initialized && !Plugin.Configuration.OutfitEnabled))
             {
-                SavedProfileHelper.UseOutfits = true;
+                Plugin.Configuration.OutfitEnabled = true;
                 profile.SetData("OUTFIT", "TRUE");
             }
             else
             {
-                SavedProfileHelper.UseOutfits = false;
+                Plugin.Configuration.OutfitEnabled = false;
                 profile.SetData("OUTFIT", "FALSE");
             }
         }

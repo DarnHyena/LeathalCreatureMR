@@ -11,20 +11,10 @@ namespace CackleCrew.ThisIsMagical
     {
         public const string DEFAULT_PROFILE_ID = "DEFAULT";
         public const string PROFILE_POSTFIX = ":Config";
-        public static string DefaultProfile
-        {
-            get
-            {
-                return DEFAULT_PROFILE_ID + PROFILE_POSTFIX;
-            }
-        }
-        public static string LocalProfile
-        {
-            get
-            {
-                return GetProfileName(TryGetLocalPlayer(out var player) ? 999999 : player.OwnerClientId);
-            }
-        }
+        public static string DefaultProfile => DEFAULT_PROFILE_ID + PROFILE_POSTFIX;
+
+        public static string LocalProfile => GetProfileName(TryGetLocalPlayer(out var player) ? 999999 : player.OwnerClientId);
+
         public static string GetProfileName(ulong ownerClientID)
         {
             return ownerClientID + PROFILE_POSTFIX;

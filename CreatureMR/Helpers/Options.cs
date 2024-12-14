@@ -14,7 +14,6 @@ namespace CackleCrew.ThisIsMagical
         {
             SetDefaultProfile();
             RegisterAssets();
-            SavedProfileHelper.Init();
         }
         public static void RegisterAssets()
         {

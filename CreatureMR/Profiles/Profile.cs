@@ -190,7 +190,7 @@ namespace CackleCrew.ThisIsMagical
         {
             if (!_data.TryGetValue(key, out var data))
             {
-                data = new ProfileData()
+                data = new ProfileData
                 {
                     Type = type
                 };
